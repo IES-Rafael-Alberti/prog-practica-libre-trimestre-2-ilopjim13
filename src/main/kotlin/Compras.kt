@@ -1,0 +1,3 @@
+interface Compras {
+    fun comprarObjeto()
+}
