@@ -1,8 +1,10 @@
+import kotlin.random.Random
+
 class Jugador(
     val nombre: String,
     var nivel: Int,
 
-) : Combates<Jugador>, Compras {
+) : Combates<Jugador>, Comprar {
 
     var rango = Rango.E  // El rango no lo eliges tu, se determina por tus estadisticas
     val experiencia: Experiencia = Experiencia()
@@ -25,10 +27,27 @@ class Jugador(
         TODO("Not yet implemented")
     }
 
+    override fun calcularDanio() :Double {
+        return estadisticas.fuerza / 0.75
 
+    }
 
-    override fun atacar(): Double {
-        TODO("Not yet implemented")
+    override fun atacar() :Double {
+        return calcularDanio()
+    }
+
+    override fun recibirDanio(danio:Double) :Boolean {
+        return if (!esquivar()) {
+            estadisticas.restarVida(this, danio)
+            true
+        }
+        else false
+    }
+
+    override fun esquivar() :Boolean {
+        val probabilidad = estadisticas.agilidad / (estadisticas.agilidad + 10)
+        val numRand = Random.nextDouble()
+        return numRand <= probabilidad
     }
 
 

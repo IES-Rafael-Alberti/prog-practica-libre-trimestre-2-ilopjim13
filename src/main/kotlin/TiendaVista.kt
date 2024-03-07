@@ -62,7 +62,7 @@ object TiendaVista {
                 }
                 style(italic = true)
                 row {
-                    cells("Tu cartera: ${Jugador.cartera}", "", "")
+                    cells("Tu cartera: ${Jugador.cartera.dinero}", "", "")
                 }
             }
         })

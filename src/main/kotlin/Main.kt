@@ -2,7 +2,13 @@ import com.github.ajalt.mordant.rendering.Whitespace.*
 import com.github.ajalt.mordant.widgets.Text
 import com.github.ajalt.mordant.rendering.TextColors.*
 import com.github.ajalt.mordant.terminal.Terminal
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
+fun Double.redondear(posiciones: Int): Double {
+    val factor = 10.0.pow(posiciones.toDouble())
+    return (this * factor).roundToInt() / factor
+}
 
 fun personajeIncial(nombre:String):Jugador {
     return Jugador(nombre, 1)

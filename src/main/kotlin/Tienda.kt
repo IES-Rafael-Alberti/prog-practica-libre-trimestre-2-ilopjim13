@@ -13,7 +13,7 @@ import com.github.ajalt.mordant.table.Borders.ALL
 import com.github.ajalt.mordant.table.Borders.LEFT_BOTTOM
 import com.github.ajalt.mordant.table.Borders.TOP_BOTTOM
 
-class Tienda (val itemsEnTienda: List<Items>) {
+class Tienda (val itemsEnTienda: List<Items>) :Venta {
 
     companion object {
         val inventarioEnTienda = mutableMapOf<Items, Int>()
@@ -49,6 +49,9 @@ class Tienda (val itemsEnTienda: List<Items>) {
 
 
         }
+    }
+
+    override fun venta() {
     }
 
 }

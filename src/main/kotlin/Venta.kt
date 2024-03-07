@@ -1,0 +1,3 @@
+interface Venta {
+    fun venta()
+}

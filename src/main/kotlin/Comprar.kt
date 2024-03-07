@@ -1,3 +1,3 @@
-interface Compras {
+interface Comprar {
     fun comprarObjeto()
 }

@@ -14,12 +14,6 @@ object Vista {
         t.println(table {
             header { row((black on brightGreen)("*** SOLO LEVELING RPG ***")) }
         })
-        t.println(
-            Panel(
-                content = Text("Hola que tal", whitespace = Whitespace.NORMAL, width = 17),
-                title = Text("Estadisticas")
-            )
-        )
 
         println("En un mundo donde empezaron a aparecer mazmorras llenas de monstruos, algunas personas despertaron habilidades, estas personas son conocidas como cazadores, y tú eres uno de ellos.\n")
     }
@@ -46,10 +40,22 @@ object Vista {
         println("4. Ir a la tienda")
 
         val opcion = pedirOpcion(4)
+
+        elegirOpcionMenu(opcion, jugador)
+
+    }
+
+    fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
+        when (opcion) {
+            1 -> ExplorarMazmorra
+            2 -> RevisarInventario.menuInventario(jugador)
+            3 -> MostrarMisiones.mostrarMisiones()
+            4 -> TiendaVista.mostrarTienda()
+        }
     }
 
     fun pedirOpcion(opciones:Int) :Int {
-        println("\n>> Selecciona una opcion: ")
+        print("\n>> Selecciona una opcion: ")
         var opcion = 1
         do {
             try {
@@ -64,6 +70,15 @@ object Vista {
 
     private fun mostrarEstadisticas(jugador: Jugador) {
         val t = Terminal()
+
+        t.println(
+            Panel(
+                content =  Text("CAZADOR", jugador.nombre.uppercase(), "NIVEL", jugador.nivel, "RANGO ${jugador.rango}"),
+                title = Text("** ESTADISTICAS **")
+            )
+        )
+
+
         t.println(table {
             borderStyle = TextColors.rgb("#4b25b9")
             header {

@@ -1,6 +1,6 @@
-class MisionDIaria {
+object MisionDIaria {
 
-    private val misiones = mutableMapOf(Mision.CORRER.desc to false, Mision.FLEXION.desc to false, Mision.ABDOMINAL.desc to false, Mision.DOMINADA.desc to false)
+    val misiones = mutableMapOf(Mision.CORRER.desc to false, Mision.FLEXION.desc to false, Mision.ABDOMINAL.desc to false, Mision.DOMINADA.desc to false)
 
     fun reiniciarMisiones() {
         misiones[Mision.CORRER.desc] = false
@@ -24,11 +24,11 @@ class MisionDIaria {
 
     }
 
-    fun misionesPorHacer() {
-        val restantes = misiones.filter { !it.value }
-        if (restantes.isNotEmpty()) println("Quedan por hacer: ${restantes.keys.joinToString(", ")}")
-        else println("Todas las misiones diarias completadas, espere hasta mañana.")
+    fun compleatarMision(mision: Mision)  {
+        misiones[mision.desc] = true
     }
+
+
 
     enum class Mision(val desc:String) {
         CORRER("Correr"), FLEXION("Flexiones"), ABDOMINAL("Abdominales"), DOMINADA("Dominadas")
