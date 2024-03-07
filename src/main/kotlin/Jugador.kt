@@ -25,21 +25,12 @@ class Jugador(
         TODO("Not yet implemented")
     }
 
-    override fun calcularDanio(): Double {
-        return estadisticas.fuerza / 0.75
-    }
+
 
     override fun atacar(): Double {
         TODO("Not yet implemented")
     }
 
-    override fun recibirDanio(danio: Double): Boolean {
-        TODO("Cuanto daño deberia recibir el jugador")
-    }
-
-    override fun esquivar(): Boolean {
-        TODO("Not yet implemented")
-    }
 
     override fun huir(): Boolean {
         TODO("Not yet implemented")
