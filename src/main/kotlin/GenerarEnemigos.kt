@@ -9,6 +9,7 @@ object GenerarEnemigos {
         val enemigos = mutableMapOf<Enemigo, Boolean>()
 
         repeat(cantidad){
+
             do {
                 numRandom = (1..5).random()
             } while (comprobarSiHayBoss(numRandom))
@@ -16,24 +17,16 @@ object GenerarEnemigos {
             when (numRandom) {
                 1 -> {
                     enemigos[generarGoblinAleatorio()] = false
-                    listaEnemigos.add(enemigos)
-                }
-
+                    listaEnemigos.add(enemigos) }
                 2 -> {
                     enemigos[generarGoblinAleatorio()] = false
-                    listaEnemigos.add(enemigos)
-                }
-
+                    listaEnemigos.add(enemigos) }
                 3 -> {
                     enemigos[generarGoblinAleatorio()] = false
-                    listaEnemigos.add(enemigos)
-                }
-
+                    listaEnemigos.add(enemigos) }
                 4 -> {
                     enemigos[generarGoblinAleatorio()] = false
-                    listaEnemigos.add(enemigos)
-                }
-
+                    listaEnemigos.add(enemigos) }
                 5 -> {
                     enemigos[generarGoblinAleatorio()] = false
                     listaEnemigos.add(enemigos)

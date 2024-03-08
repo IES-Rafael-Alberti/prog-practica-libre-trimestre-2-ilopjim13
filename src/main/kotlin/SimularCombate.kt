@@ -14,7 +14,7 @@ object SimularCombate {
 
         val combatientes = listOf(jugador, enemigo)
         do {
-            Thread.sleep(200)
+            tiempoEspera(200)
             val atacante = combatientes.random()
             val atacado = combatientes.find { it != atacante }
             val danio = atacante.atacar()

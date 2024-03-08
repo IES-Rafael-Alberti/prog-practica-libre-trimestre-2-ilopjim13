@@ -1,14 +1,17 @@
 object Juego {
 
-    var dias = 1
+    var dias = 0
     var juego = false
 
 
 
     fun iniciarJuego() {
         limpiarPantalla()
+        Tienda.agregarItemsATienda(CargarItem.todosLosItems())
         reiniciarDia()
         Vista.introduccion()
+
+
         val nombre = Vista.pedirNombre()
         val enemigo = GenerarEnemigos.generarEnemigos(1).random()
         val jugador:Jugador = personajeIncial(nombre)
@@ -33,10 +36,11 @@ object Juego {
 
 
 
-    private fun reiniciarDia() {
-        if (dias != 1) dias++
+    fun reiniciarDia() {
+        dias++
         Tienda.actualizarTiendaDiaria()
         Mazmorra.generarSalas()
+        MisionDIaria.reiniciarMisiones()
 
     }
 

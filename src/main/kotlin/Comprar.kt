@@ -1,3 +1,3 @@
 interface Comprar {
-    fun comprarObjeto()
+    fun comprarObjeto(item: Item)
 }

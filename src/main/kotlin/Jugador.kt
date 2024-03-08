@@ -10,7 +10,7 @@ class Jugador(
     val experiencia: Experiencia = Experiencia()
     val estadisticas: Estadisticas = Estadisticas(100.0, 10.0, 8.0,12.0)
     val inventario: Inventario = Inventario()
-    val historialCombate: List<String> = mutableListOf()
+    var nivelExperiencia = 0
 
     companion object {
         val cartera: Cartera = Cartera()
@@ -23,8 +23,9 @@ class Jugador(
         require(nivel > 0) { "El nivel debe ser mayor a 0" }
     }
 
-    override fun comprarObjeto() {
-        TODO("Not yet implemented")
+    override fun comprarObjeto(item: Item) {
+        inventario.agregarItem(item)
+        cartera.ganarDinero(item.precio)
     }
 
     override fun calcularDanio() :Double {
@@ -63,10 +64,12 @@ class Jugador(
     fun subirNivel() {
         if(nivel < NIVELMAX) {
             nivel++
+            nivelExperiencia++
             experiencia.limitePorNivel += 5
         }
         println("** ENHORABUENA HAS SUBIDO DE NIVEL")
         actualizarRango()
+
     }
 
     fun comprobarVida():Boolean {

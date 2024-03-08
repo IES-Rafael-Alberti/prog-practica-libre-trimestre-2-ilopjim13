@@ -22,7 +22,7 @@ object Vista {
         print("Bienvenido cazador, introduce tu nombre: ")
         var nombre: String
         do {
-            nombre = readln()
+            nombre = readln().espacios()
             if (nombre.isBlank()) print("El nombre no puede estar vacío. Introduzcalo de nuevo: ")
         } while (nombre.isBlank())
 
@@ -31,26 +31,40 @@ object Vista {
 
     fun menu(jugador: Jugador) {
         limpiarPantalla()
-        println("\n** DIA ${Juego.dias} **\n")
-        mostrarEstadisticas(jugador)
-        println("\nBuenos días que quieres hacer hoy cazador")
-        println("1. Explorar una Mazmorra")
-        println("2. Revisar el inventario")
-        println("3. Ver las misiones diarias")
-        println("4. Ir a la tienda")
+        val t=Terminal()
 
-        val opcion = pedirOpcion(4)
+        t.println(
+            Panel(
+                borderStyle = TextColors.rgb("00FFFB"),
+                content = Text("Buenos días que quieres hacer hoy cazador\n\n1. Explorar una Mazmorra\n2. Revisar el inventario\n3. Ver estadisticas\n4. Ver las misiones diarias\n5. Ir a la tienda\n6. Saltar dia", whitespace = Whitespace.PRE),
+                title = Text("** DIA ${Juego.dias} **")
+            )
+        )
+
+//        println("\n** DIA ${Juego.dias} **\n")
+//        mostrarEstadisticas(jugador)
+//        println("\nBuenos días que quieres hacer hoy cazador")
+//        println("\n1. Explorar una Mazmorra")
+//        println("\n2. Revisar el inventario")
+//        println("\n3. Ver estadisticas")
+//        println("\n4. Ver las misiones diarias")
+//        println("\n5. Ir a la tienda")
+//        println("\n6. Saltar dia")
+
+        val opcion = pedirOpcion(6)
 
         elegirOpcionMenu(opcion, jugador)
 
     }
 
-    fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
+    private fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
         when (opcion) {
             1 -> ExplorarMazmorra
             2 -> RevisarInventario.menuInventario(jugador)
-            3 -> MostrarMisiones.mostrarMisiones()
-            4 -> TiendaVista.mostrarTienda()
+            3 -> MostrarEstadisticas.menuEstadisticas(jugador)
+            4 -> MostrarMisiones.mostrarMisiones(jugador)
+            5 -> TiendaVista.menuTienda(jugador)
+            6 -> Juego.reiniciarDia()
         }
     }
 
@@ -65,29 +79,9 @@ object Vista {
                 println("**ERROR** Debe de ser una opcion valida.\n>> Selecciona una opcion: ")
             }
         } while(opcion !in (1..opciones))
+        println()
         return opcion
     }
 
-    private fun mostrarEstadisticas(jugador: Jugador) {
-        val t = Terminal()
 
-        t.println(
-            Panel(
-                content =  Text("CAZADOR", jugador.nombre.uppercase(), "NIVEL", jugador.nivel, "RANGO ${jugador.rango}"),
-                title = Text("** ESTADISTICAS **")
-            )
-        )
-
-
-        t.println(table {
-            borderStyle = TextColors.rgb("#4b25b9")
-            header {
-                style = cyan + bold
-                row("CAZADOR", jugador.nombre.uppercase(), "NIVEL", jugador.nivel, "RANGO", jugador.rango) }
-            body   { row("VIDA", "${jugador.estadisticas.vida}")
-                     row("FUERZA", "${jugador.estadisticas.fuerza}")
-                     row("AGILIDAD", "${jugador.estadisticas.agilidad}")
-                     row("RESISTENCIA", "${jugador.estadisticas.resistencia}")}
-        })
-    }
 }

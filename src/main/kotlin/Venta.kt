@@ -1,3 +1,3 @@
 interface Venta {
-    fun venta()
+    fun venta(jugador: Jugador, item: Item)
 }

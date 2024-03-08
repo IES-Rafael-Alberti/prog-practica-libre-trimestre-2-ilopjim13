@@ -1,7 +1,7 @@
 class Inventario {
-    val inventario = mutableMapOf<Items, Int>()
+    val inventario = mutableMapOf<Item, Int>()
 
-    fun agregarItem(item: Items) {
+    fun agregarItem(item: Item) {
         if (item in inventario) {
             inventario[item] = inventario[item]!! + 1
             println("Item repetido añadido al inventario.")
@@ -12,7 +12,7 @@ class Inventario {
         }
     }
 
-    fun consumirItem(item: Items) {
+    fun consumirItem(item: Item) {
         if (item in inventario) {
             if (inventario[item]!! > 1) {
                 inventario[item] = inventario[item]!! - 1
