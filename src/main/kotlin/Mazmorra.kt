@@ -1,17 +1,16 @@
-open class Mazmorra(protected val nombre:String, protected val rango: Rango) {
+class Mazmorra(val nombre:String,val rango: Rango) {
 
+    var salas:MutableMap<Int, MutableMap<Enemigo, Boolean>> = generarSalas()
+
+    private var completada = false
+
+    fun comprobarMazmorraCompletada() {
+        val comprobar = salas.any { true }
+        if (comprobar) completada = true
+    }
     companion object {
-         var salas:MutableMap<Int, List<MutableMap<Enemigo, Boolean>>> = mutableMapOf()
-
-        private var completada = false
-
-        fun comprobarMazmorraCompletada() {
-            val comprobar = salas.any { true }
-
-            if (comprobar) completada = true
-        }
-
-        fun generarSalas() {
+        private var salas:MutableMap<Int, MutableMap<Enemigo, Boolean>> = mutableMapOf()
+        fun generarSalas() :MutableMap<Int, MutableMap<Enemigo, Boolean>> {
             salas = mutableMapOf()
             val numSalas = (2..5).random()
             for(i in 1..numSalas) {
@@ -19,9 +18,11 @@ open class Mazmorra(protected val nombre:String, protected val rango: Rango) {
                 val listaEnemigos = GenerarEnemigos.generarEnemigos(numEnemigos)
                 salas[i] = listaEnemigos
             }
+            return salas
         }
     }
 
-
-
 }
+
+
+

@@ -50,14 +50,14 @@ object MostrarEstadisticas {
     private fun elegirOpcionStats(opcion:Int, jugador: Jugador) {
         when (opcion) {
             1 -> {
-                if (jugador.nivelExperiencia > 0) subirStat(jugador)
+                if (jugador.nivelExperiencia > 0) elegirStatASubir(jugador)
                 else println("No tienes suficientes puntos para gastar\n")
                 enterContinuar()
             }
         }
     }
 
-    private fun subirStat(jugador: Jugador) {
+    private fun elegirStatASubir(jugador: Jugador) {
         println("¿Donde quieres gastarlo?")
         println("1. Vida")
         println("2. Fuerza")
@@ -66,17 +66,10 @@ object MostrarEstadisticas {
 
         val opcion = Vista.pedirOpcion(4)
 
-        elegirStatASubir(opcion, jugador)
+        jugador.subirStat(opcion)
 
     }
 
-    private fun elegirStatASubir(opcion:Int, jugador: Jugador) {
-        when (opcion) {
-            1 -> jugador.estadisticas.aumentarVida(jugador, 25.0)
-            2 -> jugador.estadisticas.aumentarFuerza(jugador, 1.0)
-            3 -> jugador.estadisticas.aumentarAgilidad(jugador, 1.0)
-            4 -> jugador.estadisticas.aumentarResistencia(jugador, 1.0)
-        }
-    }
+
 
 }

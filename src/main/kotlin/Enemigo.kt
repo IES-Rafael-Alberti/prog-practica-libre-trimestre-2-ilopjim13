@@ -1,6 +1,41 @@
-abstract class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estadisticas: Estadisticas, val rango:Rango) : Combates<Enemigo> {
+import kotlin.random.Random
+
+sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estadisticas: Estadisticas, val rango:Rango) : Combates<Enemigo> {
 
     fun comprobarVida():Boolean {
         return estadisticas.vida == 0.0
     }
+
+    override fun calcularDanio() = estadisticas.fuerza / 0.75
+
+
+    override fun atacar() :Double {
+        return calcularDanio()
+    }
+
+    override fun recibirDanio(danio:Double) :Boolean {
+        return if (!esquivar()) {
+            modificarEstadisticas(this, danio, "vida") {it, cant -> it - cant}
+            true
+        }
+        else false
+
+    }
+
+    override fun esquivar() :Boolean {
+        val probabilidad = estadisticas.agilidad / (estadisticas.agilidad + 10)
+        val numRand = Random.nextDouble()
+        return numRand <= probabilidad
+    }
+
+    override fun huir(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun toString(): String {
+        return "$tipoEnemigo de nivel: $nivel y rango $rango"
+    }
+
+
+
 }

@@ -8,16 +8,18 @@ object CargarItem {
         return items.random()
     }
 
-//    private fun obtenerItemAleatorio(archivo: String): Item? {
-//        val items = File(archivo).useLines { it.toList() }
-//        val itemRandom: Item
-//        if (items.isNotEmpty()) {
-//            val datosItem = items.random().split(",").toMutableList()
-//            datosItem[3] = Estadisticas()
-//            itemRandom = Pociones(datosItem[0], datosItem[1], datosItem[2].toInt(), datosItem[3], datosItem[4])
-//        }
-//        return null
-//    }
+    fun itemAleatorioPorRango(enemigo: Enemigo):Item {
+        return when (enemigo.rango) {
+            Rango.E -> items.filter { it.rango == Rango.E }.random()
+            Rango.D -> items.filter { it.rango == listOf(Rango.E,Rango.D).random() }.random()
+            Rango.C -> items.filter { it.rango == listOf(Rango.E,Rango.D, Rango.C).random() }.random()
+            Rango.B -> items.filter { it.rango == listOf(Rango.E,Rango.D, Rango.C, Rango.B).random() }.random()
+            Rango.A -> items.filter { it.rango == listOf(Rango.E,Rango.D, Rango.C, Rango.B, Rango.A).random() }.random()
+            Rango.S -> items.filter { it.rango == listOf(Rango.E,Rango.D, Rango.C, Rango.B, Rango.A, Rango.S).random() }.random()
+        }
+    }
+
+
 
     fun todosLosItems():List<Item> {
         items = mutableListOf(Item.Pocion("Pocion de curación", Rango.E, 50, Estadisticas(25.0, 0.0,0.0,0.0), TipoPociones.VIDA),

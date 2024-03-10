@@ -13,7 +13,7 @@ object Juego {
 
 
         val nombre = Vista.pedirNombre()
-        val enemigo = GenerarEnemigos.generarEnemigos(1).random()
+
         val jugador:Jugador = personajeIncial(nombre)
         juego = true
         do {
@@ -21,15 +21,6 @@ object Juego {
         } while (juego)
 
 
-        println()
-
-        enemigo.forEach {
-            SimularCombate.simularCombate(jugador, it.key)
-        }
-
-        println()
-
-        TiendaVista.mostrarTienda()
 
     }
 

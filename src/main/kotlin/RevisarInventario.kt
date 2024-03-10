@@ -28,7 +28,8 @@ object RevisarInventario {
     private fun textoInventario(jugador: Jugador):Text {
         var texto = ""
         jugador.inventario.inventario.forEach {
-            texto += "${it.key}: ${it.value}\n"
+            if (jugador.inventario.inventario.size != 1) texto += "- ${it.key}: ${it.value}\n "
+            else texto += "- ${it.key}: ${it.value} "
         }
         return Text(texto, whitespace = Whitespace.PRE)
     }

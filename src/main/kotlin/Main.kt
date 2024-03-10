@@ -29,6 +29,7 @@ fun String.espacios(): String {
 fun enterContinuar() {
     print(">> Dale <ENTER> para continuar...")
     readln()
+    println()
 }
 
 fun personajeIncial(nombre:String):Jugador {
@@ -51,7 +52,7 @@ fun barraProgreso(texto:String):ProgressAnimation {
         percentage()
         progressBar()
         completed()
-        speed("s")
+        //speed("s")
     }
     return progreso
 }
@@ -59,7 +60,7 @@ fun barraProgreso(texto:String):ProgressAnimation {
 fun String.colorAzul():Text {
     return Text(blue(this))
 }
-fun String.ColorRojo():Text {
+fun String.colorRojo():Text {
     return Text(red(this))
 }
 fun String.colorVerde():Text {
@@ -79,5 +80,6 @@ fun String.colorNegro():Text {
 fun main() {
 
     Juego.iniciarJuego()
+
 
 }

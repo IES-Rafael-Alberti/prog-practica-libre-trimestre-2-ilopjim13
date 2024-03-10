@@ -42,8 +42,14 @@ open class Tienda:Venta {
     }
 
     override fun venta(jugador: Jugador, item: Item) {
-        jugador.comprarObjeto(item)
-        actualizarCantidades(item)
+        if (inventarioDiario[item] != 0) {
+            if (Jugador.cartera.dinero >= item.precio) {
+                jugador.comprarObjeto(item)
+                actualizarCantidades(item)
+            }
+            else println("No tienes suficiente dinero para comprar este objeto.")
+        }
+        else println("No quedan mas cantidades de este Objeto.")
     }
 
     fun comprobarId(id:Int) :Boolean {

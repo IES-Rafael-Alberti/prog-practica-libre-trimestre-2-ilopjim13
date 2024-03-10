@@ -25,8 +25,9 @@ open class MisionDIaria {
             }
             progreso.stop()
             compleatarMision(Mision.CORRER)
+            modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("** Mision completada **")
+            println("** Mision completada - Estadisticas aumentadas - **")
         }
 
         fun realizar100Flexiones(jugador: Jugador) {
@@ -39,8 +40,9 @@ open class MisionDIaria {
             }
             progreso.stop()
             compleatarMision(Mision.FLEXION)
+            modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("\n** Mision completada **")
+            println("** Mision completada - Estadisticas aumentadas - **")
         }
         fun realizar100Abdominales(jugador: Jugador) {
 
@@ -52,8 +54,9 @@ open class MisionDIaria {
             }
             progreso.stop()
             compleatarMision(Mision.ABDOMINAL)
+            modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("** Mision completada **")
+            println("** Mision completada - Estadisticas aumentadas - **")
         }
 
         fun realizar100Dominadas(jugador: Jugador) {
@@ -66,8 +69,9 @@ open class MisionDIaria {
             }
             progreso.stop()
             compleatarMision(Mision.DOMINADA)
+            modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("** Mision completada **")
+            println("** Mision completada - Estadisticas aumentadas - **")
         }
 
         private fun compleatarMision(mision: Mision)  {

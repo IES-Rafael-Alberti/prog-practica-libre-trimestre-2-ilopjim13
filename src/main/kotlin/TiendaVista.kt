@@ -2,6 +2,7 @@ import com.github.ajalt.mordant.rendering.*
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.terminal.Terminal
+import com.github.ajalt.mordant.widgets.Text
 
 object TiendaVista :Tienda() {
 
@@ -21,8 +22,6 @@ object TiendaVista :Tienda() {
                 row("Item", "Precio", "Unidades", "Id") { cellBorders = Borders.BOTTOM }
             }
             body {
-                style = TextColors.rgb("00FFF0")
-
                 column(1) {
                     style = TextColors.rgb("F3FF00")
                     cellBorders = Borders.ALL
@@ -30,6 +29,7 @@ object TiendaVista :Tienda() {
                 //42FF00
                 column(2) {
                     align = TextAlign.CENTER
+                    style = TextColors.rgb("00FFF0")
                 }
                 column(3) {
                     align = TextAlign.CENTER
@@ -39,13 +39,14 @@ object TiendaVista :Tienda() {
                 rowStyles(TextStyle(), TextStyles.dim.style)
                 cellBorders = Borders.TOP_BOTTOM
 
-                    inventarioDiario.forEach {
+                    inventarioDiario.forEach { it ->
                         column(0) {
                             align = TextAlign.LEFT
                             cellBorders = Borders.ALL
-                            style = comprobarRango(it.key)
                         }
-                        row(it.key.nombre, it.key.precio, it.value, it.key.id)
+                        val color = comprobarRango(it.key)
+                        val texto = Text(color(it.key.nombre))
+                        row(texto, it.key.precio, it.value, it.key.id)
                     }
 
                 //row("Average annual expenditures", "$61,332", "9")
@@ -105,7 +106,9 @@ object TiendaVista :Tienda() {
         lateinit var item:Item
         items.map {item = it.key}
 
-       venta(jugador, item)
+        venta(jugador, item)
+
+        enterContinuar()
 
     }
 

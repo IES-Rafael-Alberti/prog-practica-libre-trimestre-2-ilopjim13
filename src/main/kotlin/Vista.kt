@@ -40,17 +40,6 @@ object Vista {
                 title = Text("** DIA ${Juego.dias} **")
             )
         )
-
-//        println("\n** DIA ${Juego.dias} **\n")
-//        mostrarEstadisticas(jugador)
-//        println("\nBuenos días que quieres hacer hoy cazador")
-//        println("\n1. Explorar una Mazmorra")
-//        println("\n2. Revisar el inventario")
-//        println("\n3. Ver estadisticas")
-//        println("\n4. Ver las misiones diarias")
-//        println("\n5. Ir a la tienda")
-//        println("\n6. Saltar dia")
-
         val opcion = pedirOpcion(6)
 
         elegirOpcionMenu(opcion, jugador)
@@ -59,7 +48,7 @@ object Vista {
 
     private fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
         when (opcion) {
-            1 -> ExplorarMazmorra
+            1 -> ExplorarMazmorra.entrarEnMazmorra(jugador)
             2 -> RevisarInventario.menuInventario(jugador)
             3 -> MostrarEstadisticas.menuEstadisticas(jugador)
             4 -> MostrarMisiones.mostrarMisiones(jugador)
@@ -70,13 +59,13 @@ object Vista {
 
     fun pedirOpcion(opciones:Int) :Int {
         print("\n>> Selecciona una opcion: ")
-        var opcion = 1
+        var opcion = -1
         do {
             try {
                 opcion = readln().toInt()
-                if (opcion !in (1..opciones)) println("**ERROR** Debes elegir una opcion correcta.\n>> Selecciona una opcion: ")
+                if (opcion !in (1..opciones)) print("**ERROR** Debes elegir una opcion correcta.\n>> Selecciona una opcion: ")
             } catch (e: NumberFormatException) {
-                println("**ERROR** Debe de ser una opcion valida.\n>> Selecciona una opcion: ")
+                print("**ERROR** Debe de ser una opcion valida.\n>> Selecciona una opcion: ")
             }
         } while(opcion !in (1..opciones))
         println()

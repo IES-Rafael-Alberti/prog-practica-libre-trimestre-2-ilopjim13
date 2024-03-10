@@ -1,5 +1,0 @@
-interface Usable {
-
-    fun usarObjeto()
-
-}

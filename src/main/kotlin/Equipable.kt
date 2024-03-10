@@ -1,4 +1,4 @@
 interface Equipable {
-    fun equipar(jugador: Jugador)
-    fun desequipar(jugador: Jugador)
+    fun equipar(item: Item)
+    fun desequipar(item: Item)
 }
