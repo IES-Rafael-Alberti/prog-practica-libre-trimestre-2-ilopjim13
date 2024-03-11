@@ -7,6 +7,7 @@ import com.github.ajalt.mordant.widgets.Panel
 
 
 object Vista {
+    var mazmorra = ExplorarMazmorra.generarMazmorraRandom()
     fun introduccion() {
         T.println(table {
             header { row((black on brightGreen)("*** SOLO LEVELING RPG ***")) }
@@ -28,7 +29,6 @@ object Vista {
 
     fun menu(jugador: Jugador) {
         limpiarPantalla()
-        val mazmorra = ExplorarMazmorra.generarMazmorraRandom()
         T.println(
             Panel(
                 borderStyle = TextColors.rgb("00FFFB"),
@@ -38,11 +38,11 @@ object Vista {
         )
         val opcion = pedirOpcion(6)
 
-        elegirOpcionMenu(opcion, jugador, mazmorra)
+        elegirOpcionMenu(opcion, jugador)
 
     }
 
-    private fun elegirOpcionMenu(opcion: Int, jugador: Jugador, mazmorra: Mazmorra) {
+    private fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
         when (opcion) {
             1 -> {
                 if (mazmorra.comprobarMazmorraCompletada()) T.println("** NO PUEDES VOLVER A HACER LA MASMORRA VUELVE MAÑANA **".colorRojo())
@@ -60,6 +60,7 @@ object Vista {
                 if (mazmorra.comprobarMazmorraCompletada() && MisionDIaria.completas()) {
                     Juego.reiniciarDia()
                     jugador.quitarEfectoConsumible()
+                    mazmorra = ExplorarMazmorra.generarMazmorraRandom()
                     println("-- Se han restablecido los efectos de las pociones")
                     barraProgreso("Pasando de dia...")
                 } else T.println("** NO PUEDES AVANZAR DE DIA HASTA HABER COMPLETADO LA MAZMORRA Y LAS MISIONES DIARIAS **".colorRojo())

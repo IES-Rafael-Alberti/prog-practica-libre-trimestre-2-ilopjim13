@@ -25,7 +25,7 @@ object TiendaVista :Tienda() {
                     style = TextColors.rgb("F3FF00")
                     cellBorders = Borders.ALL
                 }
-                //42FF00
+
                 column(2) {
                     align = TextAlign.CENTER
                     style = TextColors.rgb("00FFF0")
@@ -38,24 +38,15 @@ object TiendaVista :Tienda() {
                 rowStyles(TextStyle(), TextStyles.dim.style)
                 cellBorders = Borders.TOP_BOTTOM
 
-                    inventarioDiario.forEach {
-                        column(0) {
-                            align = TextAlign.LEFT
-                            cellBorders = Borders.ALL
-                        }
-                        val color = comprobarRango(it.key)
-                        val texto = Text(color(it.key.nombre))
-                        row(texto, it.key.precio, it.value, it.key.id)
+                inventarioDiario.forEach {
+                    column(0) {
+                        align = TextAlign.LEFT
+                        cellBorders = Borders.ALL
                     }
-
-                //row("Average annual expenditures", "$61,332", "9")
-                //row("  Food", "7,310", "13")
-                //row("  Housing","24,298", "5")
-                //row("  Apparel and services", "1,434", "22")
-                //row("  Transportation", "12,295", "11")
-                //row("  Healthcare", "5,850", "5")
-                //row("  Entertainment","3,458", "22")
-                //row("  Education", "1,335", "8")
+                    val color = comprobarRango(it.key)
+                    val texto = Text(color(it.key.nombre))
+                    row(texto, it.key.precio, it.value, it.key.id)
+                }
             }
             footer {
                 column(1) {

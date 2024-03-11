@@ -8,9 +8,8 @@ object Juego {
     fun iniciarJuego() {
         limpiarPantalla()
         Tienda.agregarItemsATienda(CargarItem.todosLosItems())
-        reiniciarDia()
         Vista.introduccion()
-
+        reiniciarDia()
 
         val nombre = Vista.pedirNombre()
 
@@ -28,7 +27,6 @@ object Juego {
     fun reiniciarDia() {
         dias++
         Tienda.actualizarTiendaDiaria()
-        Mazmorra.generarSalas()
         MisionDIaria.reiniciarMisiones()
     }
 

@@ -6,11 +6,10 @@ class Mazmorra(val nombre:String,val rango: Rango) {
 
     fun comprobarMazmorraCompletada() :Boolean {
         val comprobar = salas.all { it -> it.value.all { it.value } }
-        if (comprobar) {
+        return if (comprobar) {
             completada = true
-            return true
-        }
-        else return false
+            true
+        } else false
     }
 
     fun salasTerminadas() {

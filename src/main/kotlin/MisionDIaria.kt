@@ -20,7 +20,7 @@ open class MisionDIaria {
             }
             progreso.stop()
             compleatarMision(Mision.CORRER)
-            modificarTodasEstadisticas(jugador, 25.0) {it,cant -> it + cant}
+            modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
             println("\n** Mision completada - Estadisticas aumentadas - **")
         }

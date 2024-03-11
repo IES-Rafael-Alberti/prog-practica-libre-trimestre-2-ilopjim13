@@ -49,6 +49,7 @@ object ExplorarMazmorra {
         val salasFinal = mazmorra.salas.filter { it.key == mazmorra.salas.size }
         salasFinal.forEach {
             do {
+                noHuye = false
                 tomaPocion = false
                 salaFinal = true
                 limpiarPantalla()
@@ -59,7 +60,7 @@ object ExplorarMazmorra {
                     )
                 )
                 salaConEnemigos(jugador, it.value)
-            } while (tomaPocion)
+            } while (noHuye || tomaPocion)
         }
 
     }
