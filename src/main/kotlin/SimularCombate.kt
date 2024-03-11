@@ -57,7 +57,7 @@ object SimularCombate {
 
     private fun finalizarCombate(jugador: Jugador, enemigo: Enemigo) {
         if (enemigo.comprobarVida()) {
-            val experiencia = experienciaASumar(enemigo)
+            val experiencia = enemigo.experienciaASumar()
             println("\n** Has acabado con el enemigo enorabuena **")
             println(">> Experiencia ganada $experiencia PX")
             jugador.experiencia.aumentarExperiencia(jugador, experiencia)
@@ -89,18 +89,6 @@ object SimularCombate {
         enterContinuar()
 
     }
-
-
-    private fun experienciaASumar(enemigo: Enemigo) :Int {
-        return when (enemigo.tipoEnemigo) {
-            TipoEnemigo.GOBLIN -> 25
-            TipoEnemigo.OGRO -> (25..50).random()
-            TipoEnemigo.ORCO -> (50..80).random()
-            TipoEnemigo.CAZADOR -> (80..100).random()
-            TipoEnemigo.BOSS -> (100..150).random()
-        }
-    }
-
 
 
     private fun mostrarRondas(combatientes: List<Combates<*>>){

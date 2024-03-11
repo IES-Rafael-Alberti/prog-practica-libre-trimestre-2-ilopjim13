@@ -1,19 +1,24 @@
 import com.github.ajalt.mordant.rendering.TextColors.*
 import com.github.ajalt.mordant.table.table
 import com.github.ajalt.mordant.rendering.TextColors
+import com.github.ajalt.mordant.rendering.TextColors.Companion.rgb
 import com.github.ajalt.mordant.rendering.Whitespace
 import com.github.ajalt.mordant.widgets.Text
 import com.github.ajalt.mordant.widgets.Panel
 
 
 object Vista {
-    var mazmorra = ExplorarMazmorra.generarMazmorraRandom()
+    private var mazmorra = ExplorarMazmorra.generarMazmorraRandom()
     fun introduccion() {
-        T.println(table {
-            header { row((black on brightGreen)("*** SOLO LEVELING RPG ***")) }
-        })
 
-        println("En un mundo donde empezaron a aparecer mazmorras llenas de monstruos, algunas personas despertaron habilidades, estas personas son conocidas como cazadores, y tú eres uno de ellos.\n")
+        T.println(table {
+            header { row((black on rgb("7FE9DB"))("   *** SOLO LEVELING RPG ***   ")) }
+        })
+        imprimirLento("En un mundo donde empezaron a aparecer mazmorras llenas de monstruos, algunas personas despertaron habilidades, ")
+        println("")
+        imprimirLento("estas personas son conocidas como cazadores, y tú eres uno de ellos.")
+        println("")
+        println("")
     }
 
     fun pedirNombre(): String {
@@ -45,7 +50,7 @@ object Vista {
     private fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
         when (opcion) {
             1 -> {
-                if (mazmorra.comprobarMazmorraCompletada()) T.println("** NO PUEDES VOLVER A HACER LA MASMORRA VUELVE MAÑANA **".colorRojo())
+                if (mazmorra.comprobarMazmorraCompletada()) T.println("** NO PUEDES VOLVER A HACER LA MAZMORRA VUELVE MAÑANA **".colorRojo())
                 else {
                     ExplorarMazmorra.entrarEnMazmorra(jugador, mazmorra)
                     mazmorra.salasTerminadas()
@@ -76,9 +81,13 @@ object Vista {
         do {
             try {
                 opcion = readln().toInt()
-                if (opcion !in (1..opciones)) print("**ERROR** Debes elegir una opcion correcta.\n>> Selecciona una opcion: ")
+                if (opcion !in (1..opciones)) {
+                    T.println("**ERROR** Debe de ser una opcion valida.".colorRojo())
+                    print(">> Selecciona una opcion: ")
+                }
             } catch (e: NumberFormatException) {
-                print("**ERROR** Debe de ser una opcion valida.\n>> Selecciona una opcion: ")
+                T.println("**ERROR** Debe de ser una opcion valida.".colorRojo())
+                print(">> Selecciona una opcion: ")
             }
         } while(opcion !in (1..opciones))
         println()

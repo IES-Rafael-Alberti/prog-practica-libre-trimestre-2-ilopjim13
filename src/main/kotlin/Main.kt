@@ -18,6 +18,13 @@ fun Double.redondear(posiciones: Int): Double {
 
 val T = Terminal()
 
+fun imprimirLento(texto: String) {
+    texto.forEach {
+        print(it)
+        tiempoEspera(50)
+    }
+}
+
 fun String.espacios(): String {
     val espacios = this.split(" ").toMutableList()
     val palabras:MutableList<String> = mutableListOf()

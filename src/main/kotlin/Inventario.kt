@@ -4,11 +4,11 @@ class Inventario {
     fun agregarItem(item: Item) {
         if (item in inventario) {
             inventario[item] = inventario[item]!! + 1
-            println("Item repetido añadido al inventario.")
+            T.println("Item repetido añadido al inventario.".colorAmarillo())
         }
         else {
             inventario[item] = 1
-            println("Item nuevo añadido al inventario.")
+            T.println("Item nuevo añadido al inventario.".colorAmarillo())
         }
     }
 

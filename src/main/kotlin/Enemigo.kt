@@ -52,6 +52,16 @@ sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estad
         }
     }
 
+    fun experienciaASumar() :Int {
+        return when (tipoEnemigo) {
+            TipoEnemigo.GOBLIN -> 25
+            TipoEnemigo.OGRO -> (25..50).random()
+            TipoEnemigo.ORCO -> (50..80).random()
+            TipoEnemigo.CAZADOR -> (80..100).random()
+            TipoEnemigo.BOSS -> (100..150).random()
+        }
+    }
+
 
 
 }

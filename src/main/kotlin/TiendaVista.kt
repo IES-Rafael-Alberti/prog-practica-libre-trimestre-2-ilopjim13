@@ -18,19 +18,26 @@ object TiendaVista :Tienda() {
                 column(0) {
                     align = TextAlign.LEFT
                 }
-                row("Item", "Precio", "Unidades", "Id") { cellBorders = Borders.BOTTOM }
+                row("Item","Rango", "Precio", "Unidades", "Id") { cellBorders = Borders.BOTTOM }
             }
             body {
                 column(1) {
-                    style = TextColors.rgb("F3FF00")
                     cellBorders = Borders.ALL
+                    align = TextAlign.CENTER
                 }
 
                 column(2) {
+                    style = TextColors.rgb("F3FF00")
+                    cellBorders = Borders.ALL
+                    align = TextAlign.CENTER
+                }
+
+                column(3) {
                     align = TextAlign.CENTER
                     style = TextColors.rgb("00FFF0")
+                    cellBorders = Borders.ALL
                 }
-                column(3) {
+                column(4) {
                     align = TextAlign.CENTER
                     style = TextColors.rgb("FF0000")
                 }
@@ -45,7 +52,8 @@ object TiendaVista :Tienda() {
                     }
                     val color = comprobarRango(it.key)
                     val texto = Text(color(it.key.nombre))
-                    row(texto, it.key.precio, it.value, it.key.id)
+                    val rango = Text(color(it.key.rango.desc))
+                    row(texto,rango, it.key.precio, it.value, it.key.id)
                 }
             }
             footer {
@@ -64,14 +72,18 @@ object TiendaVista :Tienda() {
     }
 
     fun menuTienda(jugador: Jugador) {
-        mostrarTienda()
-        println()
-        println("1- Comprar Objeto")
-        println("2- Vender Objeto")
-        println("3- Volver")
+        do {
+            limpiarPantalla()
+            mostrarTienda()
+            println()
+            println("1- Comprar Objeto")
+            println("2- Vender Objeto")
+            println("3- Volver")
 
-        val opcion = Vista.pedirOpcion(3)
-        elegirOpcionTienda(opcion, jugador)
+            val opcion = Vista.pedirOpcion(3)
+            elegirOpcionTienda(opcion, jugador)
+        } while (opcion != 3)
+
     }
 
     private fun elegirOpcionTienda(opcion:Int, jugador: Jugador) {
@@ -98,7 +110,7 @@ object TiendaVista :Tienda() {
         val items = jugador.inventario.inventario.filter { it.key.id == idObjeto }
         lateinit var item:Item
         items.map {item = it.key}
-        if (item is Item.Pocion) jugador.venderPiedras(item)
+        if (item is Item.Material) jugador.venderPiedras(item)
         else println("Este objeto no es una piedra...")
 
         enterContinuar()

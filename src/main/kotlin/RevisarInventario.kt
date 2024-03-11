@@ -18,30 +18,40 @@ object RevisarInventario {
     }
 
     fun menuInventario(jugador: Jugador) {
-        revisarInventario(jugador)
-        println("¿Que quiere hacer?")
-        println("1- Equipar objeto")
-        println("2- Desequipar objeto")
-        println("3- Ver equipo equipado")
-        println("4- Volver")
+        do {
+            revisarInventario(jugador)
+            println("¿Que quiere hacer?")
+            println("1- Equipar objeto")
+            println("2- Desequipar objeto")
+            println("3- Ver equipo equipado")
+            println("4- Volver")
 
-        val opcion = Vista.pedirOpcion(4)
-        elegirOpcionInventario(opcion, jugador)
+            val opcion = Vista.pedirOpcion(4)
+            elegirOpcionInventario(opcion, jugador)
+        } while (opcion != 4)
+
     }
 
     private fun elegirOpcionInventario(opcion: Int, jugador: Jugador) {
         when (opcion) {
             1 -> {
-                val id = pedirId(jugador)
-                val items = jugador.inventario.inventario.filter { it.key.id == id }
-                val item = items.keys.firstOrNull()
-                if (item != null ) jugador.equipar(item)
+                val equipables = jugador.inventario.inventario.filter { it.key is Equipable<*> }
+                if(equipables.isNotEmpty()) {
+                    val id = pedirId(jugador)
+                    val items = jugador.inventario.inventario.filter { it.key.id == id }
+                    val item = items.keys.firstOrNull()
+                    if (item != null ) jugador.equipar(item)
+                } else println("No tienes objetos equipables.")
+                enterContinuar()
             }
             2 -> {
-                val id = pedirId(jugador)
-                val items = jugador.inventario.inventario.filter { it.key.id == id }
-                val item = items.keys.firstOrNull()
-                if (item != null ) jugador.desequipar(item)
+                if(jugador.equipo.isNotEmpty()) {
+                    val id = pedirId(jugador)
+                    val items = jugador.inventario.inventario.filter { it.key.id == id }
+                    val item = items.keys.firstOrNull()
+                    if (item != null ) jugador.desequipar(item)
+                } else println("No tienes objetos equipados.")
+                enterContinuar()
             }
             3 -> mostrarEquipo(jugador)
         }
