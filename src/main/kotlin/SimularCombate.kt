@@ -2,6 +2,7 @@ import com.github.ajalt.mordant.rendering.Whitespace
 import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.widgets.Panel
 import com.github.ajalt.mordant.widgets.Text
+import kotlin.random.Random
 
 object SimularCombate {
 
@@ -15,14 +16,12 @@ object SimularCombate {
 
         val combatientes = listOf(jugador, enemigo)
         do {
-            tiempoEspera(400)
-            val atacante = combatientes.random()
+            tiempoEspera(800)
+            val atacante = combatientesRandom(combatientes)
             val atacado = combatientes.find { it != atacante }
-            val danio = atacante.atacar()
 
-            if (atacado != null) {
-                registrarCombate(atacado,danio,atacante, jugador, enemigo)
-            }
+            val danio = atacante.atacar()
+            if (atacado != null) registrarCombate(atacado,danio,atacante, jugador, enemigo)
 
             mostrarRondas(combatientes)
             finalizarCombate(jugador, enemigo)
@@ -31,6 +30,16 @@ object SimularCombate {
 
     }
 
+    private fun combatientesRandom(combatientes: List<Combates<*>>): Combates<*> {
+        val jugador = combatientes.filterIsInstance<Jugador>().first()
+        val enemigo = combatientes.filterIsInstance<Enemigo>().first()
+        val probabilidadJugador = jugador.estadisticas.agilidad / (jugador.estadisticas.agilidad + enemigo.estadisticas.agilidad)
+        val suerte = Random.nextDouble()
+
+        return if (suerte < probabilidadJugador) jugador
+        else enemigo
+
+    }
 
     private fun registrarCombate(atacado:Combates<*>, danio:Double, atacante:Combates<*>, jugador: Jugador, enemigo:Enemigo) {
         if(atacado.recibirDanio(danio)) {
@@ -60,6 +69,9 @@ object SimularCombate {
     }
 
     private fun darBotin(jugador: Jugador, enemigo: Enemigo) {
+        val material = enemigo.soltarMaterial()
+        println(">> Has obtenido una $material\n")
+        jugador.inventario.agregarItem(material)
         val probabilidad = (1..100).random()
         if (probabilidad > (50..70).random()) {
             if ((1..10).random() > 5) {
@@ -73,10 +85,8 @@ object SimularCombate {
                 println("** Este enemigo ha soltado un par de modenas **")
                 Jugador.cartera.ganarDinero(monedas)
             }
-        } else println("Este enemigo no ha soltado nada...")
+        } else println("Este enemigo no ha soltado ningun objeto...")
         enterContinuar()
-
-
 
     }
 

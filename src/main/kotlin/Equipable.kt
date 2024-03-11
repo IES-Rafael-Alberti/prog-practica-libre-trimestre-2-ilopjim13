@@ -1,4 +1,4 @@
-interface Equipable {
-    fun equipar(item: Item)
-    fun desequipar(item: Item)
+interface Equipable<T> {
+    fun equipar(item: T)
+    fun desequipar(item: T)
 }

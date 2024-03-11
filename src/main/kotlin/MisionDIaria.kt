@@ -1,8 +1,3 @@
-import com.github.ajalt.mordant.terminal.Terminal
-import com.github.ajalt.mordant.animation.ProgressAnimation
-import com.github.ajalt.mordant.animation.progressAnimation
-
-
 open class MisionDIaria {
 
     companion object {
@@ -25,9 +20,9 @@ open class MisionDIaria {
             }
             progreso.stop()
             compleatarMision(Mision.CORRER)
-            modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
+            modificarTodasEstadisticas(jugador, 25.0) {it,cant -> it + cant}
 
-            println("** Mision completada - Estadisticas aumentadas - **")
+            println("\n** Mision completada - Estadisticas aumentadas - **")
         }
 
         fun realizar100Flexiones(jugador: Jugador) {
@@ -42,7 +37,7 @@ open class MisionDIaria {
             compleatarMision(Mision.FLEXION)
             modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("** Mision completada - Estadisticas aumentadas - **")
+            println("\n** Mision completada - Estadisticas aumentadas - **")
         }
         fun realizar100Abdominales(jugador: Jugador) {
 
@@ -56,7 +51,7 @@ open class MisionDIaria {
             compleatarMision(Mision.ABDOMINAL)
             modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("** Mision completada - Estadisticas aumentadas - **")
+            println("\n** Mision completada - Estadisticas aumentadas - **")
         }
 
         fun realizar100Dominadas(jugador: Jugador) {
@@ -71,11 +66,16 @@ open class MisionDIaria {
             compleatarMision(Mision.DOMINADA)
             modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("** Mision completada - Estadisticas aumentadas - **")
+            println("\n** Mision completada - Estadisticas aumentadas - **")
         }
 
         private fun compleatarMision(mision: Mision)  {
             misiones[mision.desc] = true
+        }
+
+        fun completas():Boolean {
+            val completadas = misiones.all { it.value }
+            return completadas
         }
 
     }

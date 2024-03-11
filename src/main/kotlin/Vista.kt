@@ -1,7 +1,5 @@
 import com.github.ajalt.mordant.rendering.TextColors.*
-import com.github.ajalt.mordant.rendering.TextStyles.*
 import com.github.ajalt.mordant.table.table
-import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.Whitespace
 import com.github.ajalt.mordant.widgets.Text
@@ -10,8 +8,7 @@ import com.github.ajalt.mordant.widgets.Panel
 
 object Vista {
     fun introduccion() {
-        val t = Terminal()
-        t.println(table {
+        T.println(table {
             header { row((black on brightGreen)("*** SOLO LEVELING RPG ***")) }
         })
 
@@ -31,9 +28,8 @@ object Vista {
 
     fun menu(jugador: Jugador) {
         limpiarPantalla()
-        val t=Terminal()
-
-        t.println(
+        val mazmorra = ExplorarMazmorra.generarMazmorraRandom()
+        T.println(
             Panel(
                 borderStyle = TextColors.rgb("00FFFB"),
                 content = Text("Buenos días que quieres hacer hoy cazador\n\n1. Explorar una Mazmorra\n2. Revisar el inventario\n3. Ver estadisticas\n4. Ver las misiones diarias\n5. Ir a la tienda\n6. Saltar dia", whitespace = Whitespace.PRE),
@@ -42,18 +38,34 @@ object Vista {
         )
         val opcion = pedirOpcion(6)
 
-        elegirOpcionMenu(opcion, jugador)
+        elegirOpcionMenu(opcion, jugador, mazmorra)
 
     }
 
-    private fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
+    private fun elegirOpcionMenu(opcion: Int, jugador: Jugador, mazmorra: Mazmorra) {
         when (opcion) {
-            1 -> ExplorarMazmorra.entrarEnMazmorra(jugador)
+            1 -> {
+                if (mazmorra.comprobarMazmorraCompletada()) T.println("** NO PUEDES VOLVER A HACER LA MASMORRA VUELVE MAÑANA **".colorRojo())
+                else {
+                    ExplorarMazmorra.entrarEnMazmorra(jugador, mazmorra)
+                    mazmorra.salasTerminadas()
+                }
+                enterContinuar()
+            }
             2 -> RevisarInventario.menuInventario(jugador)
             3 -> MostrarEstadisticas.menuEstadisticas(jugador)
             4 -> MostrarMisiones.mostrarMisiones(jugador)
             5 -> TiendaVista.menuTienda(jugador)
-            6 -> Juego.reiniciarDia()
+            6 -> {
+                if (mazmorra.comprobarMazmorraCompletada() && MisionDIaria.completas()) {
+                    Juego.reiniciarDia()
+                    jugador.quitarEfectoConsumible()
+                    println("-- Se han restablecido los efectos de las pociones")
+                    barraProgreso("Pasando de dia...")
+                } else T.println("** NO PUEDES AVANZAR DE DIA HASTA HABER COMPLETADO LA MAZMORRA Y LAS MISIONES DIARIAS **".colorRojo())
+                enterContinuar()
+                }
+
         }
     }
 

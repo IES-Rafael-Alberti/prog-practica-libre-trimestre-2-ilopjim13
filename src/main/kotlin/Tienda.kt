@@ -1,10 +1,11 @@
-open class Tienda:Venta {
+open class Tienda:VentaTienda {
 
     companion object {
         val inventarioEnTienda = mutableMapOf<Item, Int>()
-        val inventarioDiario = mutableMapOf<Item, Int>()
+        var inventarioDiario = mutableMapOf<Item, Int>()
 
         fun actualizarTiendaDiaria(): MutableMap<Item, Int> {
+            inventarioDiario = mutableMapOf()
             val lista = inventarioEnTienda.toList()
             lista.shuffled()
             var cont = 0
@@ -50,6 +51,14 @@ open class Tienda:Venta {
             else println("No tienes suficiente dinero para comprar este objeto.")
         }
         else println("No quedan mas cantidades de este Objeto.")
+    }
+
+    fun comprobarIdPiedra(id:Int, jugador: Jugador):Boolean {
+        var idCorrecto = false
+        jugador.inventario.inventario.forEach {
+            if (it.key.id == id) idCorrecto =  true
+        }
+        return idCorrecto
     }
 
     fun comprobarId(id:Int) :Boolean {

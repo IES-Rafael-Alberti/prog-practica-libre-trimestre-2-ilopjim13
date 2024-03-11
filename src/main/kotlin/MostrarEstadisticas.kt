@@ -6,13 +6,13 @@ import com.github.ajalt.mordant.widgets.Text
 
 object MostrarEstadisticas {
 
-    fun mostrarEstadisticas(jugador: Jugador) {
+    private fun mostrarEstadisticas(jugador: Jugador) {
         val t = Terminal()
 
         t.println(
             Panel(
                 borderStyle = TextColors.rgb("00FFFB"),
-                content =  Text("CAZADOR ${jugador.nombre.uppercase()} | NIVEL ${jugador.nivel} | RANGO ${jugador.rango}\nVIDA:        ${jugador.estadisticas.vida}\nFUERZA:      ${jugador.estadisticas.fuerza}\nAGILIDAD:    ${jugador.estadisticas.agilidad}\nRESISTENCIA: ${jugador.estadisticas.resistencia}", whitespace = Whitespace.PRE),
+                content =  Text("CAZADOR ${jugador.nombre.uppercase()} | NIVEL ${jugador.nivel} | RANGO ${jugador.rango}\nVIDA:        ${jugador.estadisticas.vida.redondear(2)}\nFUERZA:      ${jugador.estadisticas.fuerza.redondear(2)}\nAGILIDAD:    ${jugador.estadisticas.agilidad.redondear(2)}\nRESISTENCIA: ${jugador.estadisticas.resistencia.redondear(2)}", whitespace = Whitespace.PRE),
                 title = Text("** ESTADISTICAS **")
             )
         )

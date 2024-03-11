@@ -20,8 +20,6 @@ object Juego {
             Vista.menu(jugador)
         } while (juego)
 
-
-
     }
 
 
@@ -32,7 +30,6 @@ object Juego {
         Tienda.actualizarTiendaDiaria()
         Mazmorra.generarSalas()
         MisionDIaria.reiniciarMisiones()
-
     }
 
 }

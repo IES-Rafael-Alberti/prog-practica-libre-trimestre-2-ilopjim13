@@ -1,3 +1,4 @@
+import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.Whitespace
 import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.widgets.Panel
@@ -5,10 +6,11 @@ import com.github.ajalt.mordant.widgets.Text
 
 object RevisarInventario {
 
-    private fun revisarInventario(jugador: Jugador) {
+    fun revisarInventario(jugador: Jugador) {
         val t = Terminal()
         t.println(
             Panel(
+                borderStyle = TextColors.magenta,
                 content = textoInventario(jugador),
                 title = Text("** INVENTARIO **")
             )
@@ -18,19 +20,76 @@ object RevisarInventario {
     fun menuInventario(jugador: Jugador) {
         revisarInventario(jugador)
         println("¿Que quiere hacer?")
-        println("1- Utilizar objeto")
-        println("2- Leer descripcion")
-        println("3- Volver")
+        println("1- Equipar objeto")
+        println("2- Desequipar objeto")
+        println("3- Ver equipo equipado")
+        println("4- Volver")
 
-        Vista.pedirOpcion(3)
+        val opcion = Vista.pedirOpcion(4)
+        elegirOpcionInventario(opcion, jugador)
     }
+
+    private fun elegirOpcionInventario(opcion: Int, jugador: Jugador) {
+        when (opcion) {
+            1 -> {
+                val id = pedirId(jugador)
+                val items = jugador.inventario.inventario.filter { it.key.id == id }
+                val item = items.keys.firstOrNull()
+                if (item != null ) jugador.equipar(item)
+            }
+            2 -> {
+                val id = pedirId(jugador)
+                val items = jugador.inventario.inventario.filter { it.key.id == id }
+                val item = items.keys.firstOrNull()
+                if (item != null ) jugador.desequipar(item)
+            }
+            3 -> mostrarEquipo(jugador)
+        }
+    }
+
+    private fun mostrarEquipo(jugador: Jugador) {
+        val equipo = jugador.equipo
+        if (equipo.isNotEmpty()) {
+            equipo.forEach {
+                when (it) {
+                    is Item.Arma -> println("- Arma: $it")
+                    is Item.Armadura -> println("- Armadura: $it")
+                    else -> println()
+                }
+            }
+        } else T.println(">> No tienes nada equipado.".colorAzul())
+        enterContinuar()
+    }
+
+    private fun pedirId(jugador: Jugador) :Int {
+        var id = -1
+        do {
+            print(">> Introduce el Id del equipo a equipar: ")
+            try {
+                id = readln().toInt()
+            } catch (e: NumberFormatException) {
+                println("**ERROR** El Id debe ser un numero")
+            }
+            if(comprobarId(id, jugador)) println("Este id no corresponde a ningun equipo.")
+        } while(comprobarId(id, jugador))
+        return id
+    }
+
+    private fun comprobarId(id: Int, jugador:Jugador) :Boolean {
+        val item = jugador.inventario.inventario.filter { it.key.id == id }
+        return item.isEmpty()
+    }
+
 
     private fun textoInventario(jugador: Jugador):Text {
         var texto = ""
-        jugador.inventario.inventario.forEach {
-            if (jugador.inventario.inventario.size != 1) texto += "- ${it.key}: ${it.value}\n "
-            else texto += "- ${it.key}: ${it.value} "
-        }
+        val inventario = jugador.inventario.inventario
+        if (inventario.isNotEmpty()) {
+            inventario.forEach {
+                texto += if (inventario.size != 1) "- ${it.key}: ${it.value}\n"
+                else "- ${it.key}: ${it.value} "
+            }
+        }else texto = "- Inventacio vacio... "
         return Text(texto, whitespace = Whitespace.PRE)
     }
 

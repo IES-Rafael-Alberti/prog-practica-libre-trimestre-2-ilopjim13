@@ -1,4 +1,3 @@
-import java.io.File
 
 object CargarItem {
 

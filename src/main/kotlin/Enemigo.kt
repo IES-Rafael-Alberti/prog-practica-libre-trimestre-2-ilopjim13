@@ -6,7 +6,12 @@ sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estad
         return estadisticas.vida == 0.0
     }
 
-    override fun calcularDanio() = estadisticas.fuerza / 0.75
+    override fun calcularDanio(): Double {
+        val probabilidad = (estadisticas.fuerza * estadisticas.agilidad) / 100
+        val suerte = (0..1000).random()/100
+        return if (probabilidad >= suerte) estadisticas.fuerza + probabilidad
+        else estadisticas.fuerza * 0.85
+    }
 
 
     override fun atacar() :Double {
@@ -34,6 +39,17 @@ sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estad
 
     override fun toString(): String {
         return "$tipoEnemigo de nivel: $nivel y rango $rango"
+    }
+
+    fun soltarMaterial(): Item.Material {
+        return when (rango) {
+            Rango.E -> Item.Material("Piedra de Rango E", 10, Rango.E, null)
+            Rango.D -> Item.Material("Piedra de Rango D", 20, Rango.E, null)
+            Rango.C -> Item.Material("Piedra de Rango C", 30, Rango.E, null)
+            Rango.B -> Item.Material("Piedra de Rango B", 40, Rango.E, null)
+            Rango.A -> Item.Material("Piedra de Rango A", 50, Rango.E, null)
+            Rango.S -> Item.Material("Piedra de Rango S", 75, Rango.E, null)
+        }
     }
 
 

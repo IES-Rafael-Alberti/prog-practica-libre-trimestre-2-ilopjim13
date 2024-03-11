@@ -1,82 +1,61 @@
 
 object GenerarEnemigos {
 
-    private var boss = 0
-
-    fun generarEnemigos(cantidad:Int): MutableMap<Enemigo, Boolean> {
+    fun generarEnemigos(cantidad:Int, salas: Int,sala: Int): MutableMap<Enemigo, Boolean> {
         var numRandom:Int
         val enemigos = mutableMapOf<Enemigo, Boolean>()
+        var enemigosSalaBoss = 1
 
         repeat(cantidad){
 
-            do {
-                numRandom = (1..5).random()
-            } while (comprobarSiHayBoss(numRandom))
-
+            numRandom = if(sala != salas) (1..4).random()
+            else {
+                if(enemigosSalaBoss == cantidad) 5
+                else {
+                    enemigosSalaBoss++
+                    (1..4).random()
+                }
+            }
             when (numRandom) {
-                1 -> {
-                    enemigos[generarGoblinAleatorio()] = false
-                    //listaEnemigos.add(enemigos)
-                }
-                2 -> {
-                    enemigos[generarOgroAleatorio()] = false
-                    //listaEnemigos.add(enemigos)
-                }
-                3 -> {
-                    enemigos[generarOrcoAleatorio()] = false
-                    //listaEnemigos.add(enemigos)
-                }
-                4 -> {
-                    enemigos[generarCazadorAleatorio()] = false
-                    //listaEnemigos.add(enemigos)
-                    }
-                5 -> {
-                    enemigos[generarBossAleatorio()] = false
-                    //listaEnemigos.add(enemigos)
-                }
+                1 -> enemigos[generarGoblinAleatorio()] = false
+                2 -> enemigos[generarOgroAleatorio()] = false
+                3 -> enemigos[generarOrcoAleatorio()] = false
+                4 -> enemigos[generarCazadorAleatorio()] = false
+                5 -> enemigos[generarBossAleatorio()] = false
             }
         }
         return enemigos
     }
-
-
-    private fun comprobarSiHayBoss(num :Int) :Boolean {
-        if (num == 5 && boss == 5) return true
-        else {
-            boss = 5
-            return false
-        }
-
-    }
-
 
     private fun generarGoblinAleatorio() :Enemigo {
         val nivel = (1..5).random()
         val estadisticas = comprobarRango(Rango.E)
         return Goblin(nivel, estadisticas, Rango.E)
     }
+
     private fun generarOgroAleatorio() :Enemigo {
-        val nivel = (1..5).random()
+        val nivel = (5..10).random()
         val rango = listOf(Rango.E,Rango.D, Rango.C).random()
         val estadisticas = comprobarRango(rango)
         return Ogro(nivel, estadisticas, rango)
     }
+
     private fun generarOrcoAleatorio() :Enemigo {
-        val nivel = (1..5).random()
+        val nivel = (10..25).random()
         val rango = listOf(Rango.D,Rango.C, Rango.B).random()
         val estadisticas = comprobarRango(rango)
         return Orco(nivel, estadisticas, rango)
     }
 
     private fun generarCazadorAleatorio() :Enemigo {
-        val nivel = (1..5).random()
+        val nivel = (25..40).random()
         val rango = listOf(Rango.C, Rango.E, Rango.D, Rango.B,Rango.A).random()
         val estadisticas = comprobarRango(rango)
         return Cazador(nivel, estadisticas, rango)
     }
 
     private fun generarBossAleatorio() :Enemigo {
-        val nivel = (1..5).random()
+        val nivel = (40..60).random()
         val estadisticas = comprobarRango(Rango.S)
         return Boss(nivel, estadisticas, Rango.S)
     }

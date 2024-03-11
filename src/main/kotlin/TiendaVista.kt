@@ -6,9 +6,8 @@ import com.github.ajalt.mordant.widgets.Text
 
 object TiendaVista :Tienda() {
 
-    fun mostrarTienda() {
+    private fun mostrarTienda() {
         val t = Terminal()
-        val inventarioDiario = actualizarTiendaDiaria()
         t.println(table {
             borderType = BorderType.SQUARE_DOUBLE_SECTION_SEPARATOR
             borderStyle = TextColors.rgb("#4b25b9")
@@ -39,7 +38,7 @@ object TiendaVista :Tienda() {
                 rowStyles(TextStyle(), TextStyles.dim.style)
                 cellBorders = Borders.TOP_BOTTOM
 
-                    inventarioDiario.forEach { it ->
+                    inventarioDiario.forEach {
                         column(0) {
                             align = TextAlign.LEFT
                             cellBorders = Borders.ALL
@@ -87,8 +86,36 @@ object TiendaVista :Tienda() {
     private fun elegirOpcionTienda(opcion:Int, jugador: Jugador) {
         when (opcion) {
             1 -> menuVenta(jugador)
+            2 -> menuCompra(jugador)
         }
     }
+
+    private fun menuCompra(jugador: Jugador) {
+        limpiarPantalla()
+        RevisarInventario.revisarInventario(jugador)
+        var idObjeto = -1
+        do {
+            print(">> Introduce el Id de la piedra a vender: ")
+            try {
+                idObjeto = readln().toInt()
+            } catch (e: NumberFormatException) {
+                println("**ERROR** El Id debe ser un numero")
+            }
+            if(!comprobarIdPiedra(idObjeto, jugador)) println("Este id no corresponde a ninguna piedra del jugador.")
+        } while(!comprobarIdPiedra(idObjeto, jugador))
+
+        val items = jugador.inventario.inventario.filter { it.key.id == idObjeto }
+        lateinit var item:Item
+        items.map {item = it.key}
+        if (item is Item.Pocion) jugador.venderPiedras(item)
+        else println("Este objeto no es una piedra...")
+
+        enterContinuar()
+
+    }
+
+
+
 
     private fun menuVenta(jugador: Jugador) {
         var idObjeto = -1

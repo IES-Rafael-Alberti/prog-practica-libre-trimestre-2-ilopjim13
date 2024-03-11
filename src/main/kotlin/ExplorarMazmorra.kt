@@ -4,41 +4,65 @@ import com.github.ajalt.mordant.widgets.Text
 object ExplorarMazmorra {
 
     private var noHuye = false
+    private var tomaPocion = false
+    private var salaFinal = false
 
-    fun entrarEnMazmorra(jugador: Jugador) {
-        val mazmorra = Mazmorra(nombreRandom(), rangoRandom())
+    fun entrarEnMazmorra(jugador: Jugador, mazmorra: Mazmorra) {
         limpiarPantalla()
         println("Has llegado a una mazmorra diaria.")
         analisis("mazmorra")
         mostrarInfoMazmorra(mazmorra)
         enterContinuar()
         entrarEnSalas(jugador, mazmorra)
+        finalizarMazmorra()
 
     }
 
     private fun entrarEnSalas(jugador: Jugador, mazmorra: Mazmorra) {
+        var cont = 1
         mazmorra.salas.forEach {
-            do {
-                noHuye = false
-                limpiarPantalla()
-                T.println(
-                    Panel(
-                        content = textoSala(it.value),
-                        title = Text("** SALA ${it.key} **")
+            if (cont < mazmorra.salas.size) {
+                do {
+                    noHuye = false
+                    tomaPocion = false
+                    cont++
+                    limpiarPantalla()
+                    T.println(
+                        Panel(
+                            content = textoSala(it.value),
+                            title = Text("** SALA ${it.key} **")
+                        )
                     )
-                )
-                if (it.value.isEmpty()) {
-                    salaVacia(jugador)
-                }
-                else {
-                    salaConEnemigos(jugador, it.value)
-                }
-            } while (noHuye)
-
-
+                    if (it.value.isEmpty()) {
+                        salaVacia(jugador)
+                    }
+                    else {
+                        salaConEnemigos(jugador, it.value)
+                    }
+                } while (noHuye || tomaPocion)
+            } else salaFinal(jugador, mazmorra)
         }
     }
 
+
+    private fun salaFinal(jugador: Jugador, mazmorra: Mazmorra) {
+        val salasFinal = mazmorra.salas.filter { it.key == mazmorra.salas.size }
+        salasFinal.forEach {
+            do {
+                tomaPocion = false
+                salaFinal = true
+                limpiarPantalla()
+                T.println(
+                    Panel(
+                        content = textoSalaFinal(it.value),
+                        title = Text("** ENTRANDO EN LA SALA DEL BOSS **")
+                    )
+                )
+                salaConEnemigos(jugador, it.value)
+            } while (tomaPocion)
+        }
+
+    }
 
 
     private fun salaConEnemigos(jugador: Jugador, enemigos: MutableMap<Enemigo, Boolean>) {
@@ -78,14 +102,30 @@ object ExplorarMazmorra {
     }
 
     private fun tomarPocion(jugador: Jugador) {
-        MostrarEstadisticas.mostrarEstadisticas(jugador)
+        RevisarInventario.revisarInventario(jugador)
+        tomaPocion = true
         println()
-        print(">> Introduce el Id del consumible que quieres usar: ")
-        val id = readln().toInt()
-        val pocion = comprobarId(id, jugador)
-        if (pocion != null) {
-            jugador.usarConsumible(pocion)
-        } else println("EL objeto introducido no es una poción")
+        if (comprobarPociones(jugador)) {
+            print(">> Introduce el Id del consumible que quieres usar: ")
+            var id = -1
+            do{
+                try {
+                    id = readln().toInt()
+                } catch (e :NumberFormatException) {
+                    println("El Id introducido debe ser correcto")
+                }
+            }while(id < 0)
+            val pocion = comprobarId(id, jugador)
+            if (pocion != null) {
+                jugador.usarConsumible(pocion)
+            } else println("El objeto introducido no es una poción")
+        } else println("No tienes pociones en el inventario...")
+        enterContinuar()
+    }
+
+    private fun comprobarPociones(jugador: Jugador): Boolean {
+        val pociones = jugador.inventario.inventario.filter { it.key is Item.Pocion }
+        return pociones.isNotEmpty()
     }
 
     private fun comprobarId(id:Int, jugador: Jugador): Item? {
@@ -100,11 +140,14 @@ object ExplorarMazmorra {
     }
 
     private fun huirDeSala(jugador: Jugador) {
-        if (jugador.huir()) println("¡Has conseguido escapar correctamente!")
+        if (!salaFinal) {
+            if (jugador.huir()) println("¡Has conseguido escapar correctamente!")
             else {
-            println("¡No has conseguido escapar!")
-            noHuye = true
+                println("¡No has conseguido escapar!")
+                noHuye = true
             }
+        } else println("No puedes huir de la sala del BOSS")
+
         enterContinuar()
     }
 
@@ -118,8 +161,7 @@ object ExplorarMazmorra {
             println("${enemigo.key.estadisticas}\n")
             enterContinuar()
             SimularCombate.simularCombate(jugador, enemigo.key)
-            roboDeVida(jugador, estadisticasIniciales)
-            enterContinuar()
+            if(jugador.estadisticas.vida < estadisticasIniciales.vida * 0.65) roboDeVida(jugador, estadisticasIniciales)
         }
     }
 
@@ -136,8 +178,13 @@ object ExplorarMazmorra {
         progreso.stop()
         jugador.estadisticas = estadisticasIniciales
         T.println("\n\n** ROBO DE VIDA COMPLETADO TUS ESTADISTICAS HAN VUELTO A LA NORMALIDAD **".colorVerde())
+        enterContinuar()
     }
 
+
+    private fun finalizarMazmorra() {
+        T.println("\n** ENHORABUENA HAS COMPLETADO LA MAZMORRA DIARIA -- VUELVE MAÑANA PARA COMPLETAR OTRA **".colorAzul())
+    }
 
 
 
@@ -167,6 +214,13 @@ object ExplorarMazmorra {
         else Text("Hay un total de $num enemigos en la sala")
     }
 
+    private fun textoSalaFinal(lista:MutableMap<Enemigo, Boolean>):Text {
+        var num = 0
+        lista.forEach { _ -> num++ }
+        return if (num == 1) Text("Solo está el BOSS en la sala")
+        else Text("Hay un total de ${num -1} enemigos en la sala además del BOSS")
+    }
+
     private fun analisis(desc:String) {
         println("Utilizando habilidad Analisis sobre $desc")
         val progreso = barraProgreso("Analizando...")
@@ -184,6 +238,10 @@ object ExplorarMazmorra {
         var numSalas = 0
         mazmorra.salas.forEach { numSalas = it.key }
         println("Nombre: ${mazmorra.nombre} de rango ${mazmorra.rango} y con un total de $numSalas salas")
+    }
+
+    fun generarMazmorraRandom() :Mazmorra {
+        return Mazmorra(nombreRandom(), rangoRandom())
     }
 
     private fun nombreRandom() :String {

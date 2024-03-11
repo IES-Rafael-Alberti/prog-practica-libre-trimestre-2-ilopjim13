@@ -1,20 +1,24 @@
 import kotlin.random.Random
 
+interface VenderJugador {
+    fun venderPiedras(item: Item)
+}
+
+
 class Jugador(
     val nombre: String,
     var nivel: Int,
 
-) : Combates<Jugador>, Comprar, Consumible, Equipable {
+) : Combates<Jugador>, Comprar, Consumible, Equipable<Item>, VenderJugador {
 
     var rango = Rango.E  // El rango no lo eliges tu, se determina por tus estadisticas
     val experiencia: Experiencia = Experiencia()
     var estadisticas: Estadisticas = Estadisticas(100.0, 10.0, 8.0,12.0)
-    private val estadisticasSinObjetos = estadisticas.copy()
-    private var estadisticasConObjetos = estadisticas.copy()
     val inventario: Inventario = Inventario()
     var nivelExperiencia = 0
     private val equipado = mutableMapOf("arma" to false, "armadura" to false)
-    private val equipados = mutableListOf<Item>()
+    val equipo = mutableListOf<Item>()
+    private val pociones = mutableListOf<Item.Pocion>()
 
     companion object {
         val cartera: Cartera = Cartera()
@@ -28,12 +32,14 @@ class Jugador(
 
     override fun comprarObjeto(item: Item) {
         inventario.agregarItem(item)
-        cartera.restarDinero(item.id)
+        cartera.restarDinero(item.precio)
     }
 
     override fun calcularDanio() :Double {
-        return estadisticas.fuerza / 0.75
-
+        val probabilidad = (estadisticas.fuerza * estadisticas.agilidad) / 100
+        val suerte = (0..1000).random()/100
+        return if (probabilidad >= suerte) estadisticas.fuerza + probabilidad
+        else estadisticas.fuerza * 0.85
     }
 
     override fun atacar() :Double {
@@ -42,7 +48,12 @@ class Jugador(
 
     override fun recibirDanio(danio:Double) :Boolean {
         return if (!esquivar()) {
-            modificarEstadisticas(this, danio, "vida") {it, cant -> it - cant}
+            val quitarResistencia = estadisticas.resistencia * 0.10
+            val danioReal = danio - (quitarResistencia)
+            if (quitarResistencia >= 1) {
+                modificarEstadisticas(this, danioReal, "vida") {it, cant -> it - cant}
+                modificarEstadisticas(this, quitarResistencia, "resistencia") {it, cant -> it - cant}
+            } else modificarEstadisticas(this, danio, "vida") {it, cant -> it - cant}
             true
         }
         else false
@@ -62,20 +73,55 @@ class Jugador(
 
     override fun equipar(item: Item) {
         when (item) {
-            is Item.Arma -> if (equipado["arma"] != false) {
-                equipado["arma"] = true
-                equipados.add(item)
+            is Item.Arma -> {
+                if (equipado["arma"] == false) {
+                    equipado["arma"] = true
+                    equipo.add(item)
+                    aumentarStastItem(this,  item ) {it, cant -> it + cant}
+                    println("$item equipado")
+                } else println("Ya tienes un arma equipada.")
             }
-            is Item.Armadura -> if (equipado["armadura"] != false) {
-                equipado["armadura"] = true
-                equipados.add(item)
+            is Item.Armadura -> {
+                if (equipado["armadura"] == false) {
+                    equipado["armadura"] = true
+                    equipo.add(item)
+                    aumentarStastItem(this,  item ) {it, cant -> it + cant}
+                    println("$item equipado")
+                } else println("Ya tienes una armadura equipada")
             }
-            is Item.Pocion -> TODO()
+            else -> println("Este objeto no se puede equipar")
         }
     }
 
     override fun desequipar(item: Item) {
-        TODO("Not yet implemented")
+        if (item in equipo) {
+            when (item) {
+                is Item.Arma -> {
+                    if (equipado["arma"] == true) {
+                        equipado["arma"] = false
+                        equipo.remove(item)
+                        aumentarStastItem(this, item ) {it, cant -> it - cant}
+                        println("$item desequipado")
+                    } else println("Ya tienes un arma equipada.")
+                }
+                is Item.Armadura -> {
+                    if (equipado["armadura"] != false) {
+                        equipado["armadura"] = true
+                        equipo.remove(item)
+                        aumentarStastItem(this, item ) {it, cant -> it - cant}
+                        println("$item desequipado")
+                    } else println("Ya tienes una armadura equipada")
+                }
+                is Item.Pocion -> quitarEfectoConsumible()
+                else -> println("Este objeto no se puede desequipar")
+            }
+        }
+    }
+
+    override fun venderPiedras(item: Item) {
+        inventario.consumirItem(item)
+        cartera.ganarDinero(item.precio/2)
+        println("Has vendido una $item, has ganado un total de ${item.precio/2}")
     }
 
     override fun toString(): String {
@@ -103,11 +149,23 @@ class Jugador(
         nivelExperiencia -= 1
     }
 
-    override fun usarConsumible(pocion: Item) {
-        modificarEstadisticas(this, pocion.estadisticas.vida, "vida") {it, cant -> it + cant}
-        modificarEstadisticas(this, pocion.estadisticas.fuerza, "fuerza") {it, cant -> it + cant}
-        modificarEstadisticas(this, pocion.estadisticas.agilidad, "agilidad") {it, cant -> it + cant}
-        modificarEstadisticas(this, pocion.estadisticas.resistencia, "resistencia") {it, cant -> it + cant}
+    override fun usarConsumible(item: Item) {
+        modificarEstadisticas(this, item.estadisticas!!.vida, "vida") { it, cant -> it + cant}
+        modificarEstadisticas(this, item.estadisticas!!.fuerza, "fuerza") { it, cant -> it + cant}
+        modificarEstadisticas(this, item.estadisticas!!.agilidad, "agilidad") { it, cant -> it + cant}
+        modificarEstadisticas(this, item.estadisticas!!.resistencia, "resistencia") { it, cant -> it + cant}
+        inventario.consumirItem(item)
+        pociones.add(item as Item.Pocion)
+    }
+
+    override fun quitarEfectoConsumible() {
+        pociones.forEach {item ->
+            modificarEstadisticas(this, item.estadisticas.vida, "vida") { it, cant -> it - cant}
+            modificarEstadisticas(this, item.estadisticas.fuerza, "fuerza") { it, cant -> it - cant}
+            modificarEstadisticas(this, item.estadisticas.agilidad, "agilidad") { it, cant -> it - cant}
+            modificarEstadisticas(this, item.estadisticas.resistencia, "resistencia") { it, cant -> it - cant}
+        }
+        pociones.removeAll(pociones)
     }
 
 
