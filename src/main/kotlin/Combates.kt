@@ -1,4 +1,3 @@
-import kotlin.random.Random
 
 interface Combates<T> {
 
@@ -10,6 +9,4 @@ interface Combates<T> {
 
     fun esquivar() :Boolean
 
-
-    fun huir() :Boolean
 }

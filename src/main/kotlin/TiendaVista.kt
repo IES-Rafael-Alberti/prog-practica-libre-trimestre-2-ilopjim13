@@ -50,7 +50,7 @@ object TiendaVista :Tienda() {
                         align = TextAlign.LEFT
                         cellBorders = Borders.ALL
                     }
-                    val color = comprobarRango(it.key)
+                    val color = it.key.comprobarRangoParaColor()
                     val texto = Text(color(it.key.nombre))
                     val rango = Text(color(it.key.rango.desc))
                     row(texto,rango, it.key.precio, it.value, it.key.id)
@@ -142,16 +142,7 @@ object TiendaVista :Tienda() {
 
     }
 
-    private fun comprobarRango(item: Item) :TextColors {
-        return when (item.rango) {
-            Rango.E -> TextColors.gray
-            Rango.D -> TextColors.green
-            Rango.C -> TextColors.blue
-            Rango.B -> TextColors.cyan
-            Rango.A -> TextColors.red
-            Rango.S -> TextColors.yellow
-        }
-    }
+
 
 
 }

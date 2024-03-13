@@ -66,7 +66,7 @@ class Jugador(
     }
 
 
-    override fun huir(): Boolean {
+    fun huir(): Boolean {
         return if ((1..100).random() <= estadisticas.agilidad * 3) true
         else false
     }
@@ -79,7 +79,7 @@ class Jugador(
                     equipo.add(item)
                     aumentarStastItem(this,  item ) {it, cant -> it + cant}
                     println("$item equipado")
-                } else println("Ya tienes un arma equipada.")
+                } else Mensaje.mostrar("Ya tienes un arma equipada.")
             }
             is Item.Armadura -> {
                 if (equipado["armadura"] == false) {
@@ -87,9 +87,9 @@ class Jugador(
                     equipo.add(item)
                     aumentarStastItem(this,  item ) {it, cant -> it + cant}
                     println("$item equipado")
-                } else println("Ya tienes una armadura equipada")
+                } else Mensaje.mostrar("Ya tienes una armadura equipada")
             }
-            else -> println("Este objeto no se puede equipar")
+            else -> Mensaje.mostrar("Este objeto no se puede equipar")
         }
     }
 
@@ -101,19 +101,19 @@ class Jugador(
                         equipado["arma"] = false
                         equipo.remove(item)
                         aumentarStastItem(this, item ) {it, cant -> it - cant}
-                        println("$item desequipado")
-                    } else println("Ya tienes un arma equipada.")
+                        Mensaje.mostrar("$item desequipado")
+                    } else Mensaje.mostrar("Ya tienes un arma equipada.")
                 }
                 is Item.Armadura -> {
                     if (equipado["armadura"] != false) {
                         equipado["armadura"] = true
                         equipo.remove(item)
                         aumentarStastItem(this, item ) {it, cant -> it - cant}
-                        println("$item desequipado")
-                    } else println("Ya tienes una armadura equipada")
+                        Mensaje.mostrar("$item desequipado")
+                    } else Mensaje.mostrar("Ya tienes una armadura equipada")
                 }
                 is Item.Pocion -> quitarEfectoConsumible()
-                else -> println("Este objeto no se puede desequipar")
+                else -> Mensaje.mostrar("Este objeto no se puede desequipar")
             }
         }
     }
@@ -121,7 +121,7 @@ class Jugador(
     override fun venderPiedras(item: Item) {
         inventario.consumirItem(item)
         cartera.ganarDinero(item.precio/2)
-        println("Has vendido una $item, has ganado un total de ${item.precio/2}")
+        Mensaje.mostrar("Has vendido una $item, has ganado un total de ${item.precio/2}")
     }
 
     override fun toString(): String {
@@ -137,6 +137,18 @@ class Jugador(
         }
         T.println("\n** ENHORABUENA HAS SUBIDO DE NIVEL** ".colorAmarillo())
         actualizarRango()
+    }
+
+    fun analisis(desc:String) {
+        Mensaje.mostrar("Utilizando habilidad Analisis sobre $desc")
+        val progreso = barraProgreso("Analizando...")
+        progreso.start()
+        (1..5).forEach {
+            progreso.update(it.toLong()*20, 100)
+            tiempoEspera(300)
+        }
+        progreso.stop()
+        Mensaje.mostrar("\n\n** Analisis completado **")
     }
 
     fun subirStat(opcion:Int) {

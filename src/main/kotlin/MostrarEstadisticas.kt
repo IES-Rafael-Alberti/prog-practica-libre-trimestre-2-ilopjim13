@@ -16,18 +16,6 @@ object MostrarEstadisticas {
                 title = Text("** ESTADISTICAS **")
             )
         )
-
-
-//        t.println(table {
-//            borderStyle = TextColors.rgb("#4b25b9")
-//            header {
-//                style = cyan + bold
-//                row("CAZADOR", jugador.nombre.uppercase(), "NIVEL", jugador.nivel, "RANGO", jugador.rango) }
-//            body   { row("VIDA", "${jugador.estadisticas.vida}")
-//                     row("FUERZA", "${jugador.estadisticas.fuerza}")
-//                     row("AGILIDAD", "${jugador.estadisticas.agilidad}")
-//                     row("RESISTENCIA", "${jugador.estadisticas.resistencia}")}
-//        })
     }
 
 

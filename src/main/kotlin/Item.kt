@@ -1,3 +1,5 @@
+import com.github.ajalt.mordant.rendering.TextColors
+
 sealed class Item {
 
     abstract val nombre:String
@@ -15,6 +17,19 @@ sealed class Item {
     companion object {
         var ident = 0
     }
+    fun comprobarRangoParaColor() : TextColors {
+        return when (rango) {
+            Rango.E -> TextColors.gray
+            Rango.D -> TextColors.green
+            Rango.C -> TextColors.blue
+            Rango.B -> TextColors.cyan
+            Rango.A -> TextColors.red
+            Rango.S -> TextColors.yellow
+        }
+    }
+
+
+
 
     data class Pocion(override val nombre: String, override val rango: Rango, override val precio: Int, override val estadisticas: Estadisticas, val tipo: TipoPociones) : Item() {
         override fun toString() = "$nombre, Rango $rango ,Id $id"

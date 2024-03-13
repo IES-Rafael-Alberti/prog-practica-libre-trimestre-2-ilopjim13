@@ -22,7 +22,7 @@ open class MisionDIaria {
             compleatarMision(Mision.CORRER)
             modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("\n** Mision completada - Estadisticas aumentadas - **")
+            Mensaje.mostrar("\n** Mision completada - Estadisticas aumentadas - **")
         }
 
         fun realizar100Flexiones(jugador: Jugador) {
@@ -37,7 +37,7 @@ open class MisionDIaria {
             compleatarMision(Mision.FLEXION)
             modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("\n** Mision completada - Estadisticas aumentadas - **")
+            Mensaje.mostrar("\n** Mision completada - Estadisticas aumentadas - **")
         }
         fun realizar100Abdominales(jugador: Jugador) {
 
@@ -51,7 +51,7 @@ open class MisionDIaria {
             compleatarMision(Mision.ABDOMINAL)
             modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("\n** Mision completada - Estadisticas aumentadas - **")
+            Mensaje.mostrar("\n** Mision completada - Estadisticas aumentadas - **")
         }
 
         fun realizar100Dominadas(jugador: Jugador) {
@@ -66,7 +66,7 @@ open class MisionDIaria {
             compleatarMision(Mision.DOMINADA)
             modificarTodasEstadisticas(jugador, 0.25) {it,cant -> it + cant}
 
-            println("\n** Mision completada - Estadisticas aumentadas - **")
+            Mensaje.mostrar("\n** Mision completada - Estadisticas aumentadas - **")
         }
 
         private fun compleatarMision(mision: Mision)  {

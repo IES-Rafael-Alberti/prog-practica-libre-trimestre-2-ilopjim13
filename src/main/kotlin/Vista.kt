@@ -8,7 +8,7 @@ import com.github.ajalt.mordant.widgets.Panel
 
 
 object Vista {
-    private var mazmorra = ExplorarMazmorra.generarMazmorraRandom()
+    private var mazmorra = GestionMazmorra.generarMazmorraRandom()
     fun introduccion() {
 
         T.println(table {
@@ -65,7 +65,7 @@ object Vista {
                 if (mazmorra.comprobarMazmorraCompletada() && MisionDIaria.completas()) {
                     Juego.reiniciarDia()
                     jugador.quitarEfectoConsumible()
-                    mazmorra = ExplorarMazmorra.generarMazmorraRandom()
+                    mazmorra = GestionMazmorra.generarMazmorraRandom()
                     println("-- Se han restablecido los efectos de las pociones")
                     barraProgreso("Pasando de dia...")
                 } else T.println("** NO PUEDES AVANZAR DE DIA HASTA HABER COMPLETADO LA MAZMORRA Y LAS MISIONES DIARIAS **".colorRojo())

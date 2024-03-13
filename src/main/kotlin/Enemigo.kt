@@ -33,10 +33,6 @@ sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estad
         return numRand <= probabilidad
     }
 
-    override fun huir(): Boolean {
-        TODO("Not yet implemented")
-    }
-
     override fun toString(): String {
         return "$tipoEnemigo de nivel: $nivel y rango $rango"
     }

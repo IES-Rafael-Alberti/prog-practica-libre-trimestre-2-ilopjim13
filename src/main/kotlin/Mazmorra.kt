@@ -2,7 +2,7 @@ class Mazmorra(val nombre:String,val rango: Rango) {
 
     var salas:MutableMap<Int, MutableMap<Enemigo, Boolean>> = generarSalas()
 
-    var completada = false
+    private var completada = false
 
     fun comprobarMazmorraCompletada() :Boolean {
         val comprobar = salas.all { it -> it.value.all { it.value } }
@@ -13,7 +13,7 @@ class Mazmorra(val nombre:String,val rango: Rango) {
     }
 
     fun salasTerminadas() {
-        salas.forEach { (key, value) ->
+        salas.forEach { (_, value) ->
             value.forEach {
                 value[it.key] = true
             }

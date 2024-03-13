@@ -30,7 +30,6 @@ fun String.espacios(): String {
     val palabras:MutableList<String> = mutableListOf()
     espacios.forEach{if (it.isNotBlank()) palabras.add(it)}
     return palabras.joinToString(" ") { i -> i.replaceFirstChar { it.uppercase() } }
-    //return this.trim().split(" ").joinToString(" ") { i -> i.replaceFirstChar { it.uppercase() } }
 }
 
 fun enterContinuar() {

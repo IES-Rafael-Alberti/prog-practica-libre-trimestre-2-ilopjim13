@@ -1,10 +1,5 @@
 object MostrarMisiones: MisionDIaria() {
 
-    fun misionesPorHacer() {
-        val restantes = misiones.filter { !it.value }
-        if (restantes.isNotEmpty()) println("Quedan por hacer: ${restantes.keys.joinToString(", ")}")
-        else println("Todas las misiones diarias completadas, espere hasta mañana.")
-    }
 
     fun mostrarMisiones(jugador: Jugador) {
         var opcion: Int

@@ -48,9 +48,9 @@ open class Tienda:VentaTienda {
                 jugador.comprarObjeto(item)
                 actualizarCantidades(item)
             }
-            else println("No tienes suficiente dinero para comprar este objeto.")
+            else Mensaje.mostrar("No tienes suficiente dinero para comprar este objeto.")
         }
-        else println("No quedan mas cantidades de este Objeto.")
+        else Mensaje.mostrar("No quedan mas cantidades de este Objeto.")
     }
 
     fun comprobarIdPiedra(id:Int, jugador: Jugador):Boolean {

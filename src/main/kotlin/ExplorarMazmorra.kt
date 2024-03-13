@@ -1,6 +1,9 @@
 import com.github.ajalt.mordant.widgets.Panel
 import com.github.ajalt.mordant.widgets.Text
 
+/**
+ * Objeto de gestión de la mazmorra
+ */
 object ExplorarMazmorra {
 
     private var noHuye = false
@@ -10,8 +13,8 @@ object ExplorarMazmorra {
     fun entrarEnMazmorra(jugador: Jugador, mazmorra: Mazmorra) {
         limpiarPantalla()
         println("Has llegado a una mazmorra diaria.")
-        analisis("mazmorra")
-        mostrarInfoMazmorra(mazmorra)
+        jugador.analisis("mazmorra")
+        GestionMazmorra.mostrarInfoMazmorra(mazmorra)
         enterContinuar()
         entrarEnSalas(jugador, mazmorra)
         finalizarMazmorra()
@@ -29,7 +32,7 @@ object ExplorarMazmorra {
                     limpiarPantalla()
                     T.println(
                         Panel(
-                            content = textoSala(it.value),
+                            content = GestionMazmorra.textoSala(it.value),
                             title = Text("** SALA ${it.key} **")
                         )
                     )
@@ -55,7 +58,7 @@ object ExplorarMazmorra {
                 limpiarPantalla()
                 T.println(
                     Panel(
-                        content = textoSalaFinal(it.value),
+                        content = GestionMazmorra.textoSalaFinal(it.value),
                         title = Text("** ENTRANDO EN LA SALA DEL BOSS **")
                     )
                 )
@@ -157,7 +160,7 @@ object ExplorarMazmorra {
         enemigos.forEach { enemigo ->
             val estadisticasIniciales:Estadisticas = jugador.estadisticas.copy()
             println("\nEnemigo ${cont++} -> ${enemigo.key.tipoEnemigo}")
-            analisis("enemigo")
+            jugador.analisis("enemigo")
             println(enemigo.key)
             println("${enemigo.key.estadisticas}\n")
             enterContinuar()
@@ -207,63 +210,14 @@ object ExplorarMazmorra {
         enterContinuar()
     }
 
-    private fun textoSala(lista:MutableMap<Enemigo, Boolean>):Text {
-        var num = 0
-        if (lista.isEmpty()) return Text("Esta sala no tiene enemigos.")
-        else lista.forEach { _ -> num++ }
-        return if (num == 1) Text("Solo hay un enemigo en la sala")
-        else Text("Hay un total de $num enemigos en la sala")
-    }
-
-    private fun textoSalaFinal(lista:MutableMap<Enemigo, Boolean>):Text {
-        var num = 0
-        lista.forEach { _ -> num++ }
-        return if (num == 1) Text("Solo está el BOSS en la sala")
-        else Text("Hay un total de ${num -1} enemigos en la sala además del BOSS")
-    }
-
-    private fun analisis(desc:String) {
-        println("Utilizando habilidad Analisis sobre $desc")
-        val progreso = barraProgreso("Analizando...")
-        progreso.start()
-        (1..5).forEach {
-            progreso.update(it.toLong()*20, 100)
-            tiempoEspera(300)
-        }
-        progreso.stop()
-        println("\n\n** Analisis completado **")
-    }
 
 
-    private fun mostrarInfoMazmorra(mazmorra: Mazmorra) {
-        var numSalas = 0
-        mazmorra.salas.forEach { numSalas = it.key }
-        println("Nombre: ${mazmorra.nombre} de rango ${mazmorra.rango} y con un total de $numSalas salas")
-    }
 
-    fun generarMazmorraRandom() :Mazmorra {
-        return Mazmorra(nombreRandom(), rangoRandom())
-    }
 
-    private fun nombreRandom() :String {
-        return listOf(
-            "Caverna de las Sombras Profundas",
-            "Cripta del Lamento Eterno",
-            "Abismo de los Antiguos",
-            "Catacumbas del Olvido",
-            "Mazmorra de la Serpiente de Obsidiana",
-            "Torre de los Susurros Oscuros",
-            "Foso de los Espíritus Perdidos",
-            "Pasaje de las Almas Errantes",
-            "Gruta de los Espectros",
-            "Antro de la Noche Infinita",
-            "Cámara de los Enigmas Arcanos",
-            "Calabozo de los Espejismos",
-            "Sala de los Mil Suspiros"
-        ).random()
-    }
 
-    private fun rangoRandom() = listOf(Rango.E, Rango.D, Rango.C, Rango.B, Rango.A, Rango.S).random()
+
+
+
 
 
 }

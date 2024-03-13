@@ -82,7 +82,7 @@ object SimularCombate {
             }
             else {
                 val monedas = (40..80).random()
-                println("** Este enemigo ha soltado un par de modenas **")
+                println("** Este enemigo ha soltado $monedas modenas **")
                 Jugador.cartera.ganarDinero(monedas)
             }
         } else println("Este enemigo no ha soltado ningun objeto...")
