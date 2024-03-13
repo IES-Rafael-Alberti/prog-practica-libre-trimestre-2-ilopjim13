@@ -1,13 +1,10 @@
+import Juego.Juego
+import Personaje.Jugador
 import com.github.ajalt.mordant.animation.ProgressAnimation
 import com.github.ajalt.mordant.animation.progressAnimation
-import com.github.ajalt.mordant.rendering.Whitespace.*
 import com.github.ajalt.mordant.widgets.Text
 import com.github.ajalt.mordant.rendering.TextColors.*
-import com.github.ajalt.mordant.rendering.TextColors
-import com.github.ajalt.mordant.rendering.TextStyle
-import com.github.ajalt.mordant.terminal.Prompt
 import com.github.ajalt.mordant.terminal.Terminal
-import com.github.ajalt.mordant.widgets.ProgressBar
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -18,12 +15,7 @@ fun Double.redondear(posiciones: Int): Double {
 
 val T = Terminal()
 
-fun imprimirLento(texto: String) {
-    texto.forEach {
-        print(it)
-        tiempoEspera(50)
-    }
-}
+
 
 fun String.espacios(): String {
     val espacios = this.split(" ").toMutableList()
@@ -38,7 +30,7 @@ fun enterContinuar() {
     println()
 }
 
-fun personajeIncial(nombre:String):Jugador {
+fun personajeIncial(nombre:String): Jugador {
     return Jugador(nombre, 1)
 }
 
