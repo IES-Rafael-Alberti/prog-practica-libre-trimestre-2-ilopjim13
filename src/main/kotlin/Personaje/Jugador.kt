@@ -13,6 +13,8 @@ import EstadisticaYRango.aumentarStastItem
 import barraProgreso
 import colorAmarillo
 import EstadisticaYRango.modificarEstadisticas
+import colorAzul
+import colorVerde
 import tiempoEspera
 import kotlin.random.Random
 
@@ -23,16 +25,15 @@ interface VenderJugador {
 
 class Jugador(
     val nombre: String,
-    var nivel: Int,
-
-) : Combates<Jugador>, Comprar, Consumible, Equipable<Item>, VenderJugador {
+    var nivel: Int
+) : Combates<Jugador>, Comprar, Consumible, VenderJugador {
 
     var rango = Rango.E  // El rango no lo eliges tu, se determina por tus estadisticas
     val experiencia: Experiencia = Experiencia()
     var estadisticas: Estadisticas = Estadisticas(100.0, 10.0, 8.0, 12.0)
     val inventario: Inventario = Inventario()
     var nivelExperiencia = 0
-    private val equipado = mutableMapOf("arma" to false, "armadura" to false)
+    val equipado = mutableMapOf("arma" to false, "armadura" to false)
     val equipo = mutableListOf<Item>()
     private val pociones = mutableListOf<Item.Pocion>()
 
@@ -51,15 +52,11 @@ class Jugador(
         cartera.restarDinero(item.precio)
     }
 
-    override fun calcularDanio() :Double {
-        val probabilidad = (estadisticas.fuerza * estadisticas.agilidad) / 100
-        val suerte = (0..1000).random()/100
-        return if (probabilidad >= suerte) estadisticas.fuerza + probabilidad
-        else estadisticas.fuerza * 0.85
-    }
-
     override fun atacar() :Double {
-        return calcularDanio()
+        val critico = (estadisticas.fuerza * estadisticas.agilidad) / 100
+        val suerte = (0..1000).random()/100
+        return if (critico >= suerte) estadisticas.fuerza + critico
+        else estadisticas.fuerza * 0.85
     }
 
     override fun recibirDanio(danio:Double) :Boolean {
@@ -87,52 +84,6 @@ class Jugador(
         else false
     }
 
-    override fun equipar(item: Item) {
-        when (item) {
-            is Item.Arma -> {
-                if (equipado["arma"] == false) {
-                    equipado["arma"] = true
-                    equipo.add(item)
-                    aumentarStastItem(this, item) { it, cant -> it + cant }
-                    println("$item equipado")
-                } else Mensaje.mostrar("Ya tienes un arma equipada.")
-            }
-            is Item.Armadura -> {
-                if (equipado["armadura"] == false) {
-                    equipado["armadura"] = true
-                    equipo.add(item)
-                    aumentarStastItem(this, item) { it, cant -> it + cant }
-                    println("$item equipado")
-                } else Mensaje.mostrar("Ya tienes una armadura equipada")
-            }
-            else -> Mensaje.mostrar("Este objeto no se puede equipar")
-        }
-    }
-
-    override fun desequipar(item: Item) {
-        if (item in equipo) {
-            when (item) {
-                is Item.Arma -> {
-                    if (equipado["arma"] == true) {
-                        equipado["arma"] = false
-                        equipo.remove(item)
-                        aumentarStastItem(this, item) { it, cant -> it - cant }
-                        Mensaje.mostrar("$item desequipado")
-                    } else Mensaje.mostrar("Ya tienes un arma equipada.")
-                }
-                is Item.Armadura -> {
-                    if (equipado["armadura"] != false) {
-                        equipado["armadura"] = true
-                        equipo.remove(item)
-                        aumentarStastItem(this, item) { it, cant -> it - cant }
-                        Mensaje.mostrar("$item desequipado")
-                    } else Mensaje.mostrar("Ya tienes una armadura equipada")
-                }
-                is Item.Pocion -> quitarEfectoConsumible()
-                else -> Mensaje.mostrar("Este objeto no se puede desequipar")
-            }
-        }
-    }
 
     override fun venderPiedras(item: Item) {
         inventario.consumirItem(item)
@@ -151,12 +102,12 @@ class Jugador(
             experiencia.limitePorNivel += 35
             experiencia.experienciaActual = 0
         }
-        T.println("\n** ENHORABUENA HAS SUBIDO DE NIVEL** ".colorAmarillo())
+        Mensaje.mostrarConColores("\n** ENHORABUENA HAS SUBIDO DE NIVEL** ".colorAmarillo())
         actualizarRango()
     }
 
     fun analisis(desc:String) {
-        Mensaje.mostrar("Utilizando habilidad Analisis sobre $desc")
+        Mensaje.mostrarConColores("Utilizando habilidad Analisis sobre $desc".colorAzul())
         val progreso = barraProgreso("Analizando...")
         progreso.start()
         (1..5).forEach {
@@ -164,7 +115,7 @@ class Jugador(
             tiempoEspera(300)
         }
         progreso.stop()
-        Mensaje.mostrar("\n\n** Analisis completado **")
+        Mensaje.mostrarConColores("\n\n** Analisis completado **".colorVerde())
     }
 
     fun subirStat(opcion:Int) {
@@ -197,7 +148,7 @@ class Jugador(
     }
 
 
-    fun comprobarVida():Boolean {
+    override fun comprobarVida():Boolean {
         return estadisticas.vida == 0.0
     }
 

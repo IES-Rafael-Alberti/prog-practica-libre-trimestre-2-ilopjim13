@@ -4,6 +4,7 @@ import Item.CargarItem
 import Enemigo.Enemigo
 import EstadisticaYRango.Estadisticas
 import Item.Item
+import Juego.Mensaje
 import Personaje.Jugador
 import Personaje.RevisarInventario
 import T
@@ -11,6 +12,7 @@ import Juego.Vista
 import barraProgreso
 import colorAzul
 import colorRojo
+import colorRosa
 import colorVerde
 import com.github.ajalt.mordant.widgets.Panel
 import com.github.ajalt.mordant.widgets.Text
@@ -26,10 +28,12 @@ object ExplorarMazmorra {
     private var noHuye = false
     private var tomaPocion = false
     private var salaFinal = false
+    private var cont = 1
 
     fun entrarEnMazmorra(jugador: Jugador, mazmorra: Mazmorra) {
         limpiarPantalla()
-        println("Has llegado a una mazmorra diaria.")
+        cont = 1
+        Mensaje.mostrarConColores("!Has llegado a una mazmorra diaria¡\n".colorRosa())
         jugador.analisis("Mazmorra")
         GestionMazmorra.mostrarInfoMazmorra(mazmorra)
         enterContinuar()
@@ -38,14 +42,15 @@ object ExplorarMazmorra {
 
     }
 
+
     private fun entrarEnSalas(jugador: Jugador, mazmorra: Mazmorra) {
-        var cont = 1
+
         mazmorra.salas.forEach {
-            if (cont < mazmorra.salas.size) {
+            cont++
+            if (cont <= mazmorra.salas.size) {
                 do {
                     noHuye = false
                     tomaPocion = false
-                    cont++
                     limpiarPantalla()
                     T.println(
                         Panel(
@@ -133,14 +138,14 @@ object ExplorarMazmorra {
                 try {
                     id = readln().toInt()
                 } catch (e :NumberFormatException) {
-                    println("El Id introducido debe ser correcto")
+                    Mensaje.mostrarConColores("El Id introducido debe ser correcto".colorRojo())
                 }
             }while(id < 0)
             val pocion = comprobarId(id, jugador)
             if (pocion != null) {
                 jugador.usarConsumible(pocion)
-            } else println("El objeto introducido no es una poción")
-        } else println("No tienes pociones en el inventario...")
+            } else Mensaje.mostrarConColores("El objeto introducido no es una poción".colorRojo())
+        } else Mensaje.mostrarConColores("No tienes pociones en el inventario...".colorRojo())
         enterContinuar()
     }
 
@@ -162,21 +167,24 @@ object ExplorarMazmorra {
 
     private fun huirDeSala(jugador: Jugador) {
         if (!salaFinal) {
-            if (jugador.huir()) println("¡Has conseguido escapar correctamente!")
+            if (jugador.huir()) Mensaje.mostrarConColores("¡Has conseguido escapar correctamente!".colorAzul())
             else {
-                println("¡No has conseguido escapar!")
+                Mensaje.mostrarConColores("¡No has conseguido escapar!".colorRojo())
                 noHuye = true
             }
-        } else println("No puedes huir de la sala del BOSS")
+        } else {
+            Mensaje.mostrarConColores("No puedes huir de la sala del BOSS".colorRojo())
+            noHuye = true
+        }
 
         enterContinuar()
     }
 
     private fun atacarEnemigos(jugador: Jugador, enemigos: MutableMap<Enemigo, Boolean>) {
-        var cont = 1
+        var index = 1
         enemigos.forEach { enemigo ->
             val estadisticasIniciales: Estadisticas = jugador.estadisticas.copy()
-            println("\nEnemigo.Enemigo ${cont++} -> ${enemigo.key.tipoEnemigo}")
+            println("\nEnemigo ${index++} -> ${enemigo.key.tipoEnemigo}")
             jugador.analisis("Enemigo")
             println(enemigo.key)
             println("${enemigo.key.estadisticas}\n")
@@ -188,8 +196,8 @@ object ExplorarMazmorra {
 
 
     private fun roboDeVida(jugador: Jugador, estadisticasIniciales: Estadisticas) {
-        T.println("\n** Activando Habilidad Robo de Vida **".colorRojo())
-        println(">> Roba las estadisticas de tu enemigo y vuelves a tu estado normal.\n")
+        Mensaje.mostrarConColores("\n** Activando Habilidad Robo de Vida **".colorRojo())
+        Mensaje.mostrar(">> Roba las estadisticas de tu enemigo y vuelves a tu estado normal.\n")
         val progreso = barraProgreso("Robo de Vida...")
         progreso.start()
         (1..5).forEach {
@@ -198,13 +206,13 @@ object ExplorarMazmorra {
         }
         progreso.stop()
         jugador.estadisticas = estadisticasIniciales
-        T.println("\n\n** ROBO DE VIDA COMPLETADO TUS ESTADISTICAS HAN VUELTO A LA NORMALIDAD **".colorVerde())
+        Mensaje.mostrarConColores("\n\n** ROBO DE VIDA COMPLETADO TUS ESTADISTICAS HAN VUELTO A LA NORMALIDAD **".colorVerde())
         enterContinuar()
     }
 
 
     private fun finalizarMazmorra() {
-        T.println("\n** ENHORABUENA HAS COMPLETADO LA MAZMORRA DIARIA -- VUELVE MAÑANA PARA COMPLETAR OTRA **".colorAzul())
+        Mensaje.mostrarConColores("\n** ENHORABUENA HAS COMPLETADO LA MAZMORRA DIARIA -- VUELVE MAÑANA PARA COMPLETAR OTRA **".colorAzul())
     }
 
 
@@ -213,17 +221,17 @@ object ExplorarMazmorra {
         val probabilidad = (1..100).random()
         if (probabilidad > 70) {
             if ((1..10).random() > 5) {
-                println("** FELICIDADES HAS ENCONTRADO UN OBJETO **")
+                Mensaje.mostrar("** FELICIDADES HAS ENCONTRADO UN OBJETO **")
                 val item = CargarItem.itemAleatorio()
-                println("Has obtenido un $item")
+                Mensaje.mostrar("Has obtenido un $item")
                 jugador.inventario.agregarItem(item)
             }
             else {
                 val monedas = (20..50).random()
-                println("** FELICIDADES HAS ENCONTRADO $monedas MONEDAS **")
+                Mensaje.mostrar("** FELICIDADES HAS ENCONTRADO $monedas MONEDAS **")
                 Jugador.cartera.ganarDinero(monedas)
             }
-        } else println("No has encontrado nada...")
+        } else Mensaje.mostrar("- No has encontrado nada...")
         enterContinuar()
     }
 

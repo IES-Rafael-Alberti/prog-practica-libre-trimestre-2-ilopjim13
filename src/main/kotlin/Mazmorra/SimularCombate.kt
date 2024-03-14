@@ -4,7 +4,12 @@ import Item.CargarItem
 import Enemigo.Enemigo
 import Juego.Fin
 import Interfaces.Combates
+import Juego.Mensaje
 import Personaje.Jugador
+import colorAzul
+import colorRojo
+import colorVerde
+import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.Whitespace
 import com.github.ajalt.mordant.terminal.Terminal
 import com.github.ajalt.mordant.widgets.Panel
@@ -54,13 +59,13 @@ object SimularCombate {
     private fun registrarCombate(atacado: Combates<*>, danio:Double, atacante: Combates<*>, jugador: Jugador, enemigo: Enemigo) {
         if(atacado.recibirDanio(danio)) {
             when (atacante) {
-                is Jugador -> registrarAccion("El cazador ${jugador.nombre} le ha hecho un daño de ${danio.redondear(2)} al enemigo, vida restante: ${enemigo.estadisticas.vida.redondear(2)}")
-                is Enemigo -> registrarAccion("El enemigo te ha hecho un daño de ${danio.redondear(2)}, vida restante: ${jugador.estadisticas.vida.redondear(2)}")
+                is Jugador -> registrarAccion(TextColors.green("El cazador ${jugador.nombre} le ha hecho un daño de ${danio.redondear(2)} al enemigo, vida restante: ${enemigo.estadisticas.vida.redondear(2)}"))
+                is Enemigo -> registrarAccion(TextColors.red("El enemigo te ha hecho un daño de ${danio.redondear(2)}, vida restante: ${jugador.estadisticas.vida.redondear(2)}"))
             }
         } else {
             when (atacado) {
-                is Jugador -> registrarAccion("${jugador.nombre} ha esquivado el ataque, vida restante: ${jugador.estadisticas.vida.redondear(2)}")
-                is Enemigo -> registrarAccion("El enemigo ha esquivado el ataque, vida restante: ${enemigo.estadisticas.vida.redondear(2)}")
+                is Jugador -> registrarAccion(TextColors.cyan("${jugador.nombre} ha esquivado el ataque, vida restante: ${jugador.estadisticas.vida.redondear(2)}"))
+                is Enemigo -> registrarAccion(TextColors.white("El enemigo ha esquivado el ataque, vida restante: ${enemigo.estadisticas.vida.redondear(2)}"))
             }
         }
     }
@@ -68,8 +73,8 @@ object SimularCombate {
     private fun finalizarCombate(jugador: Jugador, enemigo: Enemigo) {
         if (enemigo.comprobarVida()) {
             val experiencia = enemigo.experienciaASumar()
-            println("\n** Has acabado con el enemigo enhorabuena **")
-            println(">> Experiencia ganada $experiencia PX")
+            Mensaje.mostrar("\n** Has acabado con el enemigo enhorabuena **")
+            Mensaje.mostrar(">> Experiencia ganada $experiencia PX")
             jugador.experiencia.aumentarExperiencia(jugador, experiencia)
             darBotin(jugador, enemigo)
             combate = false
@@ -80,22 +85,22 @@ object SimularCombate {
 
     private fun darBotin(jugador: Jugador, enemigo: Enemigo) {
         val material = enemigo.soltarMaterial()
-        println(">> Has obtenido una $material")
+        Mensaje.mostrar(">> Has obtenido una $material")
         jugador.inventario.agregarItem(material)
         val probabilidad = (1..100).random()
         if (probabilidad > (50..70).random()) {
             if ((1..10).random() > 5) {
-                println("\n** Este enemigo ha soltado un objeto **")
+                Mensaje.mostrar("\n** Este enemigo ha soltado un objeto **")
                 val botin = CargarItem.itemAleatorioPorRango(enemigo)
-                println("Has obtenido un $botin")
+                Mensaje.mostrar("Has obtenido un $botin")
                 jugador.inventario.agregarItem(botin)
             }
             else {
                 val monedas = (40..80).random()
-                println("\n** Este enemigo ha soltado $monedas modenas **")
+                Mensaje.mostrar("\n** Este enemigo ha soltado $monedas modenas **")
                 Jugador.cartera.ganarDinero(monedas)
             }
-        } else println("\nEste enemigo no ha soltado ningun objeto...")
+        } else Mensaje.mostrar("\nEste enemigo no ha soltado ningun objeto...")
         enterContinuar()
 
     }

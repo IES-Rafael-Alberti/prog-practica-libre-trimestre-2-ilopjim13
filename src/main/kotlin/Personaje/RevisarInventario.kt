@@ -48,7 +48,8 @@ object RevisarInventario {
                     val id = pedirId(jugador)
                     val items = jugador.inventario.inventario.filter { it.key.id == id }
                     val item = items.keys.firstOrNull()
-                    if (item != null ) jugador.equipar(item)
+                    if (item != null && item is Item.Arma) item.equipar(jugador)
+                    else if (item != null && item is Item.Armadura) item.equipar(jugador)
                 } else println("No tienes objetos equipables.")
                 enterContinuar()
             }
@@ -57,7 +58,8 @@ object RevisarInventario {
                     val id = pedirId(jugador)
                     val items = jugador.inventario.inventario.filter { it.key.id == id }
                     val item = items.keys.firstOrNull()
-                    if (item != null ) jugador.desequipar(item)
+                    if (item != null && item is Item.Arma) item.desequipar(jugador)
+                    else if (item != null && item is Item.Armadura) item.desequipar(jugador)
                 } else println("No tienes objetos equipados.")
                 enterContinuar()
             }
@@ -101,13 +103,14 @@ object RevisarInventario {
 
     private fun textoInventario(jugador: Jugador):Text {
         var texto = ""
+        var cont = 1
         val inventario = jugador.inventario.inventario
         if (inventario.isNotEmpty()) {
             inventario.forEach {
-                texto += if (inventario.size != 1) "- ${it.key}: ${it.value}\n"
+                texto += if (inventario.size != cont++) "- ${it.key}: ${it.value}\n"
                 else "- ${it.key}: ${it.value} "
             }
-        }else texto = "- Inventacio vacio... "
+        }else texto = "- Inventario vacio... "
         return Text(texto, whitespace = Whitespace.PRE)
     }
 

@@ -2,7 +2,10 @@ package Item
 
 import EstadisticaYRango.Estadisticas
 import EstadisticaYRango.Rango
+import EstadisticaYRango.aumentarStastItem
 import Interfaces.Equipable
+import Juego.Mensaje
+import Personaje.Jugador
 import com.github.ajalt.mordant.rendering.TextColors
 
 sealed class Item {
@@ -39,24 +42,49 @@ sealed class Item {
     data class Pocion(override val nombre: String, override val rango: Rango, override val precio: Int, override val estadisticas: Estadisticas, val tipo: TipoPociones) : Item() {
         override fun toString() = "$nombre, Rango $rango ,Id $id"
     }
-    data class Arma(override val nombre: String, override val rango: Rango, override val precio: Int, override val estadisticas: Estadisticas, val tipo: TipoEquipable) : Item(), Equipable<Arma> {
-        override fun equipar(item: Arma) {
-            TODO("Not yet implemented")
+    data class Arma(override val nombre: String, override val rango: Rango, override val precio: Int, override val estadisticas: Estadisticas, val tipo: TipoEquipable) : Item(), Equipable<Jugador> {
+
+        override fun equipar(jugador: Jugador) {
+            if (jugador.equipado["arma"] == false) {
+                jugador.equipado["arma"] = true
+                jugador.equipo.add(this)
+                aumentarStastItem(jugador, this) { it, cant -> it + cant }
+                Mensaje.mostrar("$this equipado")
+            } else Mensaje.mostrar("Ya tienes un arma equipada.")
         }
 
-        override fun desequipar(item: Arma) {
-            TODO("Not yet implemented")
+        override fun desequipar(jugador: Jugador) {
+            if (this in jugador.equipo) {
+                if (jugador.equipado["arma"] == true) {
+                    jugador.equipado["arma"] = false
+                    jugador.equipo.remove(this)
+                    aumentarStastItem(jugador, this) { it, cant -> it - cant }
+                    Mensaje.mostrar("$this desequipado")
+                } else Mensaje.mostrar("Ya tienes un arma equipada.")
+            }
         }
 
         override fun toString() = "$nombre, Rango $rango ,Id $id"
     }
-    data class Armadura(override val nombre: String, override val rango: Rango, override val precio: Int, override val estadisticas: Estadisticas, val tipo: TipoEquipable) : Item(), Equipable<Armadura> {
-        override fun equipar(item: Armadura) {
-            TODO("Not yet implemented")
+    data class Armadura(override val nombre: String, override val rango: Rango, override val precio: Int, override val estadisticas: Estadisticas, val tipo: TipoEquipable) : Item(), Equipable<Jugador> {
+        override fun equipar(jugador: Jugador) {
+            if (jugador.equipado["armadura"] == false) {
+                jugador.equipado["armadura"] = true
+                jugador.equipo.add(this)
+                aumentarStastItem(jugador, this) { it, cant -> it + cant }
+                Mensaje.mostrar("$this equipado")
+            } else Mensaje.mostrar("Ya tienes una armadura equipada")
         }
 
-        override fun desequipar(item: Armadura) {
-            TODO("Not yet implemented")
+        override fun desequipar(jugador:Jugador) {
+            if (this in jugador.equipo) {
+                if (jugador.equipado["armadura"] == true) {
+                    jugador.equipado["armadura"] = false
+                    jugador.equipo.remove(this)
+                    aumentarStastItem(jugador, this) { it, cant -> it - cant }
+                    Mensaje.mostrar("$this desequipado")
+                } else Mensaje.mostrar("Ya tienes una armadura equipada.")
+            }
         }
 
         override fun toString() = "$nombre, Rango $rango ,Id $id"

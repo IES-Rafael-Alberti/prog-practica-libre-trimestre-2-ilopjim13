@@ -1,8 +1,13 @@
 package EstadisticaYRango
 
+import Juego.Mensaje
 import Personaje.Jugador
 import Juego.Vista
 import T
+import colorAzul
+import colorRojo
+import com.github.ajalt.mordant.rendering.BorderType
+import com.github.ajalt.mordant.rendering.TextAlign
 import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.Whitespace
 import com.github.ajalt.mordant.terminal.Terminal
@@ -16,9 +21,20 @@ object MostrarEstadisticas {
     private fun mostrarEstadisticas(jugador: Jugador) {
         T.println(
             Panel(
-                borderStyle = TextColors.rgb("00FFFB"),
-                content =  Text("CAZADOR ${jugador.nombre.uppercase()} | NIVEL ${jugador.nivel} | RANGO ${jugador.rango}\nVIDA:        ${jugador.estadisticas.vida.redondear(2)}\nFUERZA:      ${jugador.estadisticas.fuerza.redondear(2)}\nAGILIDAD:    ${jugador.estadisticas.agilidad.redondear(2)}\nRESISTENCIA: ${jugador.estadisticas.resistencia.redondear(2)}", whitespace = Whitespace.PRE),
-                title = Text("** ESTADISTICAS **")
+                borderStyle = TextColors.rgb("D2FFA4"),
+                content =  Text(
+                    TextColors.brightBlue(" CAZADOR ${jugador.nombre.uppercase()} |") +
+                        TextColors.brightBlue(" RANGO ${jugador.rango} |") +
+                        TextColors.brightBlue(" NIVEL ${jugador.nivel} \n") +
+                        " VIDA:       ${jugador.nombre.map { "" }.joinToString(" ")}           " +
+                            TextColors.yellow("${jugador.estadisticas.vida.redondear(2)}\n") +
+                        " FUERZA:     ${jugador.nombre.map { "" }.joinToString(" ")}           " +
+                            TextColors.yellow("${jugador.estadisticas.fuerza.redondear(2)}\n") +
+                        " AGILIDAD:   ${jugador.nombre.map { "" }.joinToString(" ")}           " +
+                            TextColors.yellow("${jugador.estadisticas.agilidad.redondear(2)}\n") +
+                        " RESISTENCIA:${jugador.nombre.map { "" }.joinToString(" ")}           " +
+                            TextColors.yellow("${jugador.estadisticas.resistencia.redondear(2)}"), whitespace = Whitespace.PRE),
+                title = Text(TextColors.rgb("D2FFA4")("** ESTADISTICAS **"))
             )
         )
     }
@@ -30,7 +46,7 @@ object MostrarEstadisticas {
             mostrarEstadisticas(jugador)
 
             println()
-            println("Tienes un total de ${jugador.nivelExperiencia} puntos para subir.")
+            Mensaje.mostrarConColores(Text("Tienes un total de ${TextColors.yellow(jugador.nivelExperiencia.toString())} puntos para subir."))
             println("1. Gastar punto de experiencia")
             println("2. Salir")
 

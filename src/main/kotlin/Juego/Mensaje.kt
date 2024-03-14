@@ -17,7 +17,7 @@ object Mensaje {
     fun imprimirLento(texto: String) {
         texto.forEach {
             print(it)
-            tiempoEspera(50)
+            tiempoEspera(10)
         }
     }
 

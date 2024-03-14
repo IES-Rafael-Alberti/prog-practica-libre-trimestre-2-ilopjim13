@@ -1,7 +1,7 @@
 package Interfaces
 interface Combates<T> {
 
-    fun calcularDanio() :Double
+    fun comprobarVida() :Boolean
 
     fun atacar() :Double
 

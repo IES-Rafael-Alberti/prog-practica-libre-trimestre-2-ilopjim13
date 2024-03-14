@@ -1,7 +1,7 @@
 package Personaje
 
 class Experiencia {
-    var limitePorNivel = 100
+    var limitePorNivel = 150
     var experienciaActual = 0
 
 

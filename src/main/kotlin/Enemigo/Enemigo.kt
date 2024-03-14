@@ -9,20 +9,15 @@ import kotlin.random.Random
 
 sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estadisticas: Estadisticas, val rango: Rango) : Combates<Enemigo> {
 
-    fun comprobarVida():Boolean {
+    override fun comprobarVida():Boolean {
         return estadisticas.vida == 0.0
     }
 
-    override fun calcularDanio(): Double {
+    override fun atacar() :Double {
         val probabilidad = (estadisticas.fuerza * estadisticas.agilidad) / 100
         val suerte = (0..1000).random()/100
         return if (probabilidad >= suerte) estadisticas.fuerza + probabilidad
         else estadisticas.fuerza * 0.85
-    }
-
-
-    override fun atacar() :Double {
-        return calcularDanio()
     }
 
     override fun recibirDanio(danio:Double) :Boolean {

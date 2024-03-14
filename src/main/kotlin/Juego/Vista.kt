@@ -53,11 +53,18 @@ object Vista {
         T.println(
             Panel(
                 borderStyle = TextColors.rgb("00FFFB"),
-                content = Text("Buenos días que quieres hacer hoy ${jugador.nombre}\n\n1. Explorar una Mazmorra\n2. Revisar el inventario\n3. Ver estadisticas\n4. Ver las misiones diarias\n5. Ir a la tienda\n6. Saltar dia", whitespace = Whitespace.PRE),
+                content = Text("Buenos días que quieres hacer hoy ${jugador.nombre}\n\n" +
+                        "1. Explorar una Mazmorra\n" +
+                        "2. Revisar el inventario\n" +
+                        "3. Ver estadisticas\n" +
+                        "4. Ver las misiones diarias\n" +
+                        "5. Ir a la tienda\n" +
+                        "6. Saltar dia\n" +
+                        "7. Salir del juego", whitespace = Whitespace.PRE),
                 title = Text("** DIA ${Juego.dias} **")
             )
         )
-        val opcion = pedirOpcion(6)
+        val opcion = pedirOpcion(7)
 
         elegirOpcionMenu(opcion, jugador)
 
@@ -86,8 +93,8 @@ object Vista {
                     barraProgreso("Pasando de dia...")
                 } else T.println("** NO PUEDES AVANZAR DE DIA HASTA HABER COMPLETADO LA MAZMORRA Y LAS MISIONES DIARIAS **".colorRojo())
                 enterContinuar()
-                }
-
+            }
+            7 -> Fin.salirDelJuego()
         }
     }
 
