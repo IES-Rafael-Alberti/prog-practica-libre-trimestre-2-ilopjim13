@@ -31,7 +31,7 @@ val T = Terminal() // Constante para utilizar el mordant
 fun String.espacios(): String {
     val espacios = this.split(" ").toMutableList()
     val palabras:MutableList<String> = mutableListOf()
-    espacios.forEach{if (it.isNotBlank()) palabras.add(it)}
+    espacios.forEach{if (it.isNotBlank()) palabras.add(it.lowercase())}
     return palabras.joinToString(" ") { i -> i.replaceFirstChar { it.uppercase() } }
 }
 

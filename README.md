@@ -76,6 +76,7 @@ Este conjunto de preguntas está diseñado para ayudarte a reflexionar sobre có
 
 #### **Criterio global 4: Definir clases y su contenido**
 - **(4.b, 4.c, 4.d, 4.g)**: Explica sobre un ejemplo de tu código, cómo definiste las clases en tu proyecto, es decir como identificaste las de propiedades, métodos y constructores y modificadores del control de acceso a métodos y propiedades, para representar al objeto del mundo real. ¿Cómo contribuyen estas clases a la solución del problema que tu aplicación aborda?
+- Mi idea principal era la de realizar un RPG por lo que necesitaba 
 
 #### **Criterio global 5: Herencia y uso de clases abstractas e interfaces**
 - **(4.h, 4.j, 7.a, 7.b, 7.c)**: Describe sobre tu código cómo has implementado la herencia o utilizado interfaces en tu proyecto. ¿Por qué elegiste este enfoque y cómo beneficia a la estructura de tu aplicación? ¿De qué manera has utilizado los principios SOLID para mejorar el diseño de tu proyecto? ¿Mostrando tu código, contesta a qué principios has utilizado y qué beneficio has obtenido?
@@ -85,6 +86,9 @@ Este conjunto de preguntas está diseñado para ayudarte a reflexionar sobre có
 
 #### **Criterio global 7: Librerías de clases**
 - **(2.g, 4.k)**: Describe cualquier librería externa que hayas incorporado en tu proyecto. Explica cómo y por qué las elegiste, y cómo las incorporaste en tu proyecto. ¿Cómo extendió la funcionalidad de tu aplicación? Proporciona ejemplos específicos de su uso en tu proyecto.
+
+
+- Para mi proyecto he utilizado la libreria Mordant para darle una estética más llamativa al programa utilizando tablas, paneles y colores, solo extiende mi programa de manera estética ya que no le da funcionalidades como tal
 
 #### **Criterio global 8: Documentado**
 - **(7.h)**: Muestra ejemplos de cómo has documentado y comentado tu código. ¿Que herramientas has utilizado? ¿Cómo aseguras que tu documentación aporte valor para la comprensión, mantenimiento y depuración del código?
