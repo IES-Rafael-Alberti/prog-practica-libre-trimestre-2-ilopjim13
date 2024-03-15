@@ -11,43 +11,70 @@ import T
 import Tienda.TiendaVista
 import barraProgreso
 import colorRojo
+import com.github.ajalt.mordant.rendering.*
 import com.github.ajalt.mordant.rendering.TextColors.*
 import com.github.ajalt.mordant.table.table
-import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.rendering.TextColors.Companion.rgb
-import com.github.ajalt.mordant.rendering.Whitespace
+import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.widgets.Text
 import com.github.ajalt.mordant.widgets.Panel
 import enterContinuar
 import espacios
 import limpiarPantalla
 
-
+/**
+ * Objeta Vista que contiene funciones relacionadas con la interfaz del juego.
+ */
 object Vista {
+
     private var mazmorra = GestionMazmorra.generarMazmorraRandom()
+
+    /**
+     * Muestra la introducción del juego.
+     */
     fun introduccion() {
 
         T.println(table {
-            header { row((black on rgb("7FE9DB"))("   *** SOLO LEVELING RPG ***   ")) }
+            borderType = BorderType.ROUNDED
+            borderStyle = TextStyle(color = cyan, bold = true)
+            header { row(Text((black on TextColors.rgb("D5E3FF"))(
+                "  __                            \n" +
+                        " (_  _ | _  |  _    _ |o._  _   \n" +
+                        " __)(_)|(_) |_(/_\\/(/_||| |(_|  \n" +
+                        "                            _|  "))) }
         })
         Mensaje.imprimirLento("En un mundo donde empezaron a aparecer mazmorras llenas de monstruos, algunas personas despertaron habilidades, ")
         println("")
-        Mensaje.imprimirLento("estas personas son conocidas como cazadores, y tú eres uno de ellos.")
+        Mensaje.imprimirLento("estas personas son conocidas como cazadores, estos cazadores deben luchar contra monstruos para proteger a la raza humana")
+        println("")
+        Mensaje.imprimirLento("de una aniquilación segura, y tú eres uno de ellos. Te adentrarás a las mazmorras mientras subes de nivel para acabar con los monstruos.")
+        println("")
+        Mensaje.imprimirLento("Buena suerte cazador, yo el sistema te guiaré durante tu aventura, comencemos.")
         println("")
         println("")
     }
 
+    /**
+     * Solicita al jugador que ingrese su nombre.
+     *
+     * @return El nombre ingresado por el jugador.
+     */
     fun pedirNombre(): String {
-        print("Bienvenido cazador, introduce tu nombre: ")
         var nombre: String
         do {
+            print(">> Bienvenido cazador, introduce tu nombre: ")
             nombre = readln().espacios()
-            if (nombre.isBlank()) print("El nombre no puede estar vacío. Introduzcalo de nuevo: ")
+            if (nombre.isBlank()) Mensaje.mostrarConColores("El nombre no puede estar vacío. Introduzcalo de nuevo".colorRojo())
         } while (nombre.isBlank())
 
         return nombre
     }
 
+    /**
+     * Muestra el menú de opciones al jugador.
+     *
+     * @param jugador el jugador que va a jugar la partida.
+     */
     fun menu(jugador: Jugador) {
         limpiarPantalla()
         T.println(
@@ -70,6 +97,12 @@ object Vista {
 
     }
 
+    /**
+     * Dependiendo de la opción seleccionada por el jugador en el menú llama a otra funcion o termina el juego.
+     *
+     * @param opcion La opción seleccionada por el jugador.
+     * @param jugador El objeto `Jugador` actual.
+     */
     private fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
         when (opcion) {
             1 -> {
@@ -98,6 +131,12 @@ object Vista {
         }
     }
 
+    /**
+     * Solicita al usuario seleccionar una opción del menú.
+     *
+     * @param opciones: Int El número total de opciones disponibles.
+     * @return La opción seleccionada por el usuario.
+     */
     fun pedirOpcion(opciones:Int) :Int {
         print("\n>> Selecciona una opcion: ")
         var opcion = -1

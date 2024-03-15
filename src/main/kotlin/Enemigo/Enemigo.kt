@@ -7,12 +7,31 @@ import EstadisticaYRango.Rango
 import EstadisticaYRango.modificarEstadisticas
 import kotlin.random.Random
 
-sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estadisticas: Estadisticas, val rango: Rango) : Combates<Enemigo> {
+/**
+ * Clase abstracta que representa un enemigo.
+ *
+ * @param tipoEnemigo Tipo de enemigo.
+ * @param nivel Nivel del enemigo.
+ * @param estadisticas Estadísticas del enemigo (vida, fuerza, agilidad y resistencia).
+ * @param rango Rango del enemigo.
+ */
+abstract class Enemigo(open val tipoEnemigo: TipoEnemigo, private val nivel:Int, val estadisticas: Estadisticas, val rango: Rango) : Combates<Enemigo> {
 
+    /**
+     * Comprueba si el enemigo está sin vida.
+     *
+     * @return Boolean true si el enemigo está sin vida y false en caso contrario.
+     */
     override fun comprobarVida():Boolean {
         return estadisticas.vida == 0.0
     }
 
+    /**
+     * Realiza un ataque y retorna el daño y dependiendo de la fuerza y la agilidad del enemigo crea una probabilidad para
+     * hacer un ataque critico
+     *
+     * @return El daño infligido por el ataque.
+     */
     override fun atacar() :Double {
         val probabilidad = (estadisticas.fuerza * estadisticas.agilidad) / 100
         val suerte = (0..1000).random()/100
@@ -20,6 +39,12 @@ sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estad
         else estadisticas.fuerza * 0.85
     }
 
+    /**
+     * Recibe daño del oponente si no puede esquivar
+     *
+     * @param danio Cantidad de daño recibido.
+     * @return Boolean true si el enemigo no esquiva el ataque y recibe daño, false si logra esquivarlo.
+     */
     override fun recibirDanio(danio:Double) :Boolean {
         return if (!esquivar()) {
             modificarEstadisticas(this, danio, "vida") { it, cant -> it - cant }
@@ -29,16 +54,31 @@ sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estad
 
     }
 
+    /**
+     * Intenta esquivar un ataque, dependiendo de la agilidad del enemigo el la probabilidad es mayor.
+     *
+     * @return Boolean true si el enemigo logra esquivar el ataque, false en caso contrario.
+     */
     override fun esquivar() :Boolean {
         val probabilidad = estadisticas.agilidad / (estadisticas.agilidad + 10)
         val numRand = Random.nextDouble()
         return numRand <= probabilidad
     }
 
+    /**
+     * Muestra la información del enemigo
+     *
+     * @return String con la información sobre el tipo de enemigo, nivel y rango.
+     */
     override fun toString(): String {
         return "$tipoEnemigo de nivel: $nivel y rango $rango"
     }
 
+    /**
+     * Genera un material que el enemigo puede soltar al ser derrotado.
+     *
+     * @return Material generado según el rango del enemigo.
+     */
     fun soltarMaterial(): Item.Material {
         return when (rango) {
             Rango.E -> Item.Material("Piedra de Rango E", 10, Rango.E, null)
@@ -50,6 +90,11 @@ sealed class Enemigo(open val tipoEnemigo: TipoEnemigo, val nivel:Int, val estad
         }
     }
 
+    /**
+     * Calcula la experiencia que se debe sumar al jugador al derrotar a este enemigo.
+     *
+     * @return Int Experiencia a sumar.
+     */
     fun experienciaASumar() :Int {
         return when (tipoEnemigo) {
             TipoEnemigo.GOBLIN -> 25

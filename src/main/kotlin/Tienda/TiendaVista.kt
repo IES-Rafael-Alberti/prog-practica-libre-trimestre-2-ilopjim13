@@ -14,6 +14,10 @@ import limpiarPantalla
 
 object TiendaVista : Tienda() {
 
+    /**
+     * Genera y muestra por pantalla una tabla con los productos diarios de la tienda en la que apareceran con colores
+     * diferentes dependiendo del rango del objeto que se vende
+     */
     private fun mostrarTienda() {
         val t = Terminal()
         t.println(table {
@@ -79,6 +83,11 @@ object TiendaVista : Tienda() {
         })
     }
 
+    /**
+     * Muestra el menú de la tienda y permite al jugador realizar acciones como comprar o vender objetos.
+     *
+     * @param jugador El jugador que interactúa con la tienda.
+     */
     fun menuTienda(jugador: Jugador) {
         do {
             limpiarPantalla()
@@ -94,6 +103,12 @@ object TiendaVista : Tienda() {
 
     }
 
+    /**
+     * Permite al jugador elegir una opción en el menú de la tienda.
+     *
+     * @param opcion La opción seleccionada por el jugador.
+     * @param jugador El jugador que interactúa con la tienda.
+     */
     private fun elegirOpcionTienda(opcion:Int, jugador: Jugador) {
         when (opcion) {
             1 -> menuVenta(jugador)
@@ -101,6 +116,11 @@ object TiendaVista : Tienda() {
         }
     }
 
+    /**
+     * Muestra el menú de compra de la tienda, donde el jugador puede vender piedras.
+     *
+     * @param jugador El jugador que interactúa con la tienda.
+     */
     private fun menuCompra(jugador: Jugador) {
         limpiarPantalla()
         RevisarInventario.revisarInventario(jugador)
@@ -125,9 +145,11 @@ object TiendaVista : Tienda() {
 
     }
 
-
-
-
+    /**
+     * Muestra el menú de venta en la tienda, donde el jugador puede comprar objetos.
+     *
+     * @param jugador El jugador que interactúa con la tienda.
+     */
     private fun menuVenta(jugador: Jugador) {
         var idObjeto = -1
         do {
@@ -147,7 +169,6 @@ object TiendaVista : Tienda() {
         venta(jugador, item)
 
         enterContinuar()
-
     }
 
 

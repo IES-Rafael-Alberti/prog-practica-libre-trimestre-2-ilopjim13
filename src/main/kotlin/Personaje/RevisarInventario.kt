@@ -14,6 +14,11 @@ import enterContinuar
 
 object RevisarInventario {
 
+    /**
+     * Muestra el inventario del jugador en una interfaz gráfica.
+     *
+     * @param jugador El jugador cuyo inventario se va a revisar.
+     */
     fun revisarInventario(jugador: Jugador) {
         val t = Terminal()
         t.println(
@@ -25,6 +30,11 @@ object RevisarInventario {
         )
     }
 
+    /**
+     * Muestra un menú interactivo para gestionar el inventario del jugador.
+     *
+     * @param jugador El jugador cuyo inventario se va a gestionar.
+     */
     fun menuInventario(jugador: Jugador) {
         do {
             revisarInventario(jugador)
@@ -40,6 +50,12 @@ object RevisarInventario {
 
     }
 
+    /**
+     * Realiza una acción según la opción seleccionada en el menú de inventario.
+     *
+     * @param opcion La opción seleccionada por el jugador.
+     * @param jugador El jugador cuyo inventario se va a gestionar.
+     */
     private fun elegirOpcionInventario(opcion: Int, jugador: Jugador) {
         when (opcion) {
             1 -> {
@@ -67,6 +83,11 @@ object RevisarInventario {
         }
     }
 
+    /**
+     * Muestra el equipo actualmente equipado por el jugador.
+     *
+     * @param jugador El jugador cuyo equipo se va a mostrar.
+     */
     private fun mostrarEquipo(jugador: Jugador) {
         val equipo = jugador.equipo
         if (equipo.isNotEmpty()) {
@@ -81,6 +102,12 @@ object RevisarInventario {
         enterContinuar()
     }
 
+    /**
+     * Solicita al jugador que introduzca un ID de equipo y verifica si es válido.
+     *
+     * @param jugador El jugador cuyo inventario se va a consultar.
+     * @return El ID válido introducido por el jugador.
+     */
     private fun pedirId(jugador: Jugador) :Int {
         var id = -1
         do {
@@ -95,12 +122,24 @@ object RevisarInventario {
         return id
     }
 
+    /**
+     * Verifica si el ID proporcionado corresponde a un equipo en el inventario del jugador.
+     *
+     * @param id El ID a comprobar.
+     * @param jugador El jugador cuyo inventario se va a consultar.
+     * @return `true` si el ID no corresponde a ningún equipo, `false` en caso contrario.
+     */
     private fun comprobarId(id: Int, jugador: Jugador) :Boolean {
         val item = jugador.inventario.inventario.filter { it.key.id == id }
         return item.isEmpty()
     }
 
-
+    /**
+     * Genera un texto que representa el inventario del jugador.
+     *
+     * @param jugador El jugador cuyo inventario se va a consultar.
+     * @return Un objeto Text que contiene la descripción del inventario.
+     */
     private fun textoInventario(jugador: Jugador):Text {
         var texto = ""
         var cont = 1

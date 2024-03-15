@@ -7,9 +7,17 @@ import colorAmarillo
 import colorRosa
 import colorVerde
 
+/**
+ * Clase que representa el inventario del jugador.
+ */
 class Inventario {
     val inventario = mutableMapOf<Item, Int>()
 
+    /**
+     * Agrega un item al inventario.
+     *
+     * @param item El item a agregar.
+     */
     fun agregarItem(item: Item) {
         if (item in inventario) {
             inventario[item] = inventario[item]!! + 1
@@ -21,6 +29,11 @@ class Inventario {
         }
     }
 
+    /**
+     * Consume un item del inventario.
+     *
+     * @param item El item a consumir.
+     */
     fun consumirItem(item: Item) {
         if (item in inventario) {
             if (inventario[item]!! > 1) {
@@ -32,8 +45,5 @@ class Inventario {
             }
         }
     }
-
-
-
 
 }

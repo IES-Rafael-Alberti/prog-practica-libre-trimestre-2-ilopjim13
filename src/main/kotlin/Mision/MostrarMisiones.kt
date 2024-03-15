@@ -1,6 +1,5 @@
 package Mision
 
-import Juego.Juego
 import Juego.Mensaje
 import Personaje.Jugador
 import Juego.Vista
@@ -13,9 +12,16 @@ import com.github.ajalt.mordant.widgets.Text
 import enterContinuar
 import limpiarPantalla
 
+/**
+ * Objeto que muestra las misiones diarias del jugador.
+ */
 object MostrarMisiones: MisionDIaria() {
 
-
+    /**
+     * Muestra las misiones diarias disponibles al jugador.
+     *
+     * @param jugador El jugador que visualiza las misiones.
+     */
     fun mostrarMisiones(jugador: Jugador) {
         var opcion: Int
         do {
@@ -41,6 +47,12 @@ object MostrarMisiones: MisionDIaria() {
         }while (opcion != 5)
     }
 
+    /**
+     * Elige una opción de misión y realiza la acción correspondiente.
+     *
+     * @param opcion La opción seleccionada por el jugador.
+     * @param jugador El jugador que realiza la misión.
+     */
     private fun elegirOpcionMision(opcion: Int, jugador: Jugador) {
         when (opcion) {
             1 ->  {

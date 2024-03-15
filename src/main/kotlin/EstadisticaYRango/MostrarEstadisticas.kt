@@ -16,8 +16,16 @@ import com.github.ajalt.mordant.widgets.Text
 import enterContinuar
 import redondear
 
+/**
+ * Objeto que muestra las estadísticas del jugador en un formato visual.
+ */
 object MostrarEstadisticas {
 
+    /**
+     * Muestra las estadísticas del jugador en un panel con colores.
+     *
+     * @param jugador Jugador cuyas estadísticas se mostrarán.
+     */
     private fun mostrarEstadisticas(jugador: Jugador) {
         T.println(
             Panel(
@@ -39,7 +47,11 @@ object MostrarEstadisticas {
         )
     }
 
-
+    /**
+     * Muestra el menú de estadísticas y permite al jugador gastar puntos de experiencia.
+     *
+     * @param jugador Jugador cuyas estadísticas se mostrarán y modificarán.
+     */
     fun menuEstadisticas(jugador: Jugador) {
 
         do {
@@ -56,6 +68,12 @@ object MostrarEstadisticas {
 
     }
 
+    /**
+     * Función que permite al jugador elegir una opción relacionada con las estadísticas.
+     *
+     * @param opcion Opción seleccionada por el jugador.
+     * @param jugador Jugador cuyas estadísticas se modificarán.
+     */
     private fun elegirOpcionStats(opcion:Int, jugador: Jugador) {
         when (opcion) {
             1 -> {
@@ -66,6 +84,11 @@ object MostrarEstadisticas {
         }
     }
 
+    /**
+     * Permite al jugador elegir qué estadística subir.
+     *
+     * @param jugador Jugador cuyas estadísticas se modificarán.
+     */
     private fun elegirStatASubir(jugador: Jugador) {
         println("¿Donde quieres gastarlo?")
         println("1. Vida")

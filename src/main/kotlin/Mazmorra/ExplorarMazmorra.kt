@@ -21,7 +21,12 @@ import limpiarPantalla
 import tiempoEspera
 
 /**
- * Objeto de gestión de la mazmorra
+ * Clase que representa la exploración de una mazmorra.
+ *
+ * @property noHuye indica si el jugador ha intentado huir de la mazmorra.
+ * @property tomaPocion indica si el jugador ha tomado una poción durante la exploración.
+ * @property salaFinal indica si la sala actual es la sala final de la mazmorra.
+ * @property cont contador para llevar el registro de las salas exploradas.
  */
 object ExplorarMazmorra {
 
@@ -30,6 +35,12 @@ object ExplorarMazmorra {
     private var salaFinal = false
     private var cont = 1
 
+    /**
+     * Método para que el jugador entre en la mazmorra y comience la exploración.
+     *
+     * @param jugador el jugador que entra en la mazmorra.
+     * @param mazmorra la mazmorra a explorar.
+     */
     fun entrarEnMazmorra(jugador: Jugador, mazmorra: Mazmorra) {
         limpiarPantalla()
         cont = 1
@@ -43,8 +54,13 @@ object ExplorarMazmorra {
     }
 
 
+    /**
+     * Ejecuta la exploración en las salas de la mazmorra.
+     *
+     * @param jugador el jugador que entra en la mazmorra.
+     * @param mazmorra la mazmorra a explorar.
+     */
     private fun entrarEnSalas(jugador: Jugador, mazmorra: Mazmorra) {
-
         mazmorra.salas.forEach {
             cont++
             if (cont <= mazmorra.salas.size) {
@@ -60,8 +76,7 @@ object ExplorarMazmorra {
                     )
                     if (it.value.isEmpty()) {
                         salaVacia(jugador)
-                    }
-                    else {
+                    } else {
                         salaConEnemigos(jugador, it.value)
                     }
                 } while (noHuye || tomaPocion)
@@ -69,7 +84,12 @@ object ExplorarMazmorra {
         }
     }
 
-
+    /**
+     * Cuando llega a la ultima sala no se puede huir y cambia el texto de las salas y la sala no puede estar vacía.
+     *
+     * @param jugador el jugador que está explorando la mazmorra.
+     * @param mazmorra la mazmorra actual.
+     */
     private fun salaFinal(jugador: Jugador, mazmorra: Mazmorra) {
         val salasFinal = mazmorra.salas.filter { it.key == mazmorra.salas.size }
         salasFinal.forEach {
@@ -87,10 +107,14 @@ object ExplorarMazmorra {
                 salaConEnemigos(jugador, it.value)
             } while (noHuye || tomaPocion)
         }
-
     }
 
-
+    /**
+     * Maneja la interacción del jugador con una sala que contiene enemigos.
+     *
+     * @param jugador el jugador que está explorando la mazmorra.
+     * @param enemigos el mapa de enemigos presentes en la sala y su estado.
+     */
     private fun salaConEnemigos(jugador: Jugador, enemigos: MutableMap<Enemigo, Boolean>) {
         println("¿Que quieres hacer?")
         println("1. Atacar a los enemigos.")
@@ -102,7 +126,11 @@ object ExplorarMazmorra {
         elegirOpcionSala(opcion, jugador, enemigos)
     }
 
-
+    /**
+     * Maneja la interacción del jugador con una sala vacía en la mazmorra.
+     *
+     * @param jugador el jugador que está explorando la mazmorra.
+     */
     private fun salaVacia(jugador: Jugador) {
         println("¿Que quieres hacer?")
         println("1. Buscar objeto oculto")
@@ -113,6 +141,13 @@ object ExplorarMazmorra {
         elegirOpcionSalaVacia(opcion, jugador)
     }
 
+    /**
+     * Ejecuta la elección de opciones por parte del jugador en una sala con enemigos.
+     *
+     * @param opcion la opción seleccionada por el jugador.
+     * @param jugador el jugador que está explorando la mazmorra.
+     * @param enemigos el mapa de enemigos presentes en la sala y su estado.
+     */
     private fun elegirOpcionSala(opcion: Int, jugador: Jugador, enemigos: MutableMap<Enemigo, Boolean>) {
         when (opcion) {
             1-> atacarEnemigos(jugador, enemigos)
@@ -121,12 +156,24 @@ object ExplorarMazmorra {
         }
     }
 
+    /**
+     * Ejecuta la elección de opciones por parte del jugador en una sala vacía.
+     *
+     * @param opcion la opción seleccionada por el jugador.
+     * @param jugador el jugador que está explorando la mazmorra.
+     */
     private fun elegirOpcionSalaVacia(opcion:Int, jugador: Jugador) {
         when (opcion) {
             1 -> buscarObjeto(jugador)
         }
     }
 
+
+    /**
+     * Ejecuta la acción de tomar una poción durante la exploración de una sala.
+     *
+     * @param jugador el jugador que está explorando la mazmorra.
+     */
     private fun tomarPocion(jugador: Jugador) {
         RevisarInventario.revisarInventario(jugador)
         tomaPocion = true
@@ -149,11 +196,24 @@ object ExplorarMazmorra {
         enterContinuar()
     }
 
+    /**
+     * Comprueba si el jugador tiene pociones en su inventario.
+     *
+     * @param jugador el jugador cuyo inventario se verificará.
+     * @return Boolean retorna true si el jugador tiene pociones, false en caso contrario.
+     */
     private fun comprobarPociones(jugador: Jugador): Boolean {
         val pociones = jugador.inventario.inventario.filter { it.key is Item.Pocion }
         return pociones.isNotEmpty()
     }
 
+    /**
+     * Comprueba si el jugador tiene un item con la id introducida.
+     *
+     * @param id el ID del objeto a comprobar.
+     * @param jugador el jugador cuyo inventario se verificará.
+     * @return El objeto correspondiente al ID si existe en el inventario, o null si no se encuentra.
+     */
     private fun comprobarId(id:Int, jugador: Jugador): Item? {
         val objetos = jugador.inventario.inventario.filter { it.key.id == id }
         val objeto = objetos.keys.firstOrNull()
@@ -165,6 +225,11 @@ object ExplorarMazmorra {
         }
     }
 
+    /**
+     * Ejecuta la acción de huir de una sala durante la exploración.
+     *
+     * @param jugador el jugador que está explorando la mazmorra.
+     */
     private fun huirDeSala(jugador: Jugador) {
         if (!salaFinal) {
             if (jugador.huir()) Mensaje.mostrarConColores("¡Has conseguido escapar correctamente!".colorAzul())
@@ -176,10 +241,15 @@ object ExplorarMazmorra {
             Mensaje.mostrarConColores("No puedes huir de la sala del BOSS".colorRojo())
             noHuye = true
         }
-
         enterContinuar()
     }
 
+    /**
+     * Ejecuta la acción de atacar a los enemigos presentes en una sala.
+     *
+     * @param jugador el jugador que está explorando la mazmorra.
+     * @param enemigos el mapa de enemigos presentes en la sala y su estado.
+     */
     private fun atacarEnemigos(jugador: Jugador, enemigos: MutableMap<Enemigo, Boolean>) {
         var index = 1
         enemigos.forEach { enemigo ->
@@ -190,33 +260,23 @@ object ExplorarMazmorra {
             println("${enemigo.key.estadisticas}\n")
             enterContinuar()
             SimularCombate.simularCombate(jugador, enemigo.key)
-            roboDeVida(jugador, estadisticasIniciales)
+            jugador.roboDeVida(estadisticasIniciales)
         }
     }
 
-
-    private fun roboDeVida(jugador: Jugador, estadisticasIniciales: Estadisticas) {
-        Mensaje.mostrarConColores("\n** Activando Habilidad Robo de Vida **".colorRojo())
-        Mensaje.mostrar(">> Roba las estadisticas de tu enemigo y vuelves a tu estado normal.\n")
-        val progreso = barraProgreso("Robo de Vida...")
-        progreso.start()
-        (1..5).forEach {
-            progreso.update(it.toLong()*20, 100)
-            tiempoEspera(300)
-        }
-        progreso.stop()
-        jugador.estadisticas = estadisticasIniciales
-        Mensaje.mostrarConColores("\n\n** ROBO DE VIDA COMPLETADO TUS ESTADISTICAS HAN VUELTO A LA NORMALIDAD **".colorVerde())
-        enterContinuar()
-    }
-
-
+    /**
+     * Finaliza la exploración de la mazmorra diaria.
+     */
     private fun finalizarMazmorra() {
         Mensaje.mostrarConColores("\n** ENHORABUENA HAS COMPLETADO LA MAZMORRA DIARIA -- VUELVE MAÑANA PARA COMPLETAR OTRA **".colorAzul())
     }
 
 
-
+    /**
+     * Ejecuta la acción de buscar un objeto durante la exploración de una sala.
+     *
+     * @param jugador el jugador que está explorando la mazmorra.
+     */
     private fun buscarObjeto(jugador: Jugador) {
         val probabilidad = (1..100).random()
         if (probabilidad > 70) {

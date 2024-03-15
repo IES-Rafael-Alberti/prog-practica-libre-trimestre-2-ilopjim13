@@ -4,14 +4,26 @@ import Enemigo.Enemigo
 import EstadisticaYRango.Estadisticas
 import EstadisticaYRango.Rango
 
+/**
+ * Objeto que se encarga de cargar todos los items del juego, de forma aleatoria o cargando todos
+ */
 object CargarItem {
 
-    lateinit var items:List<Item>
+    private lateinit var items:List<Item>
 
+    /**
+     * Retorna un ítem aleatorio de la lista.
+     * @return Item aleatorio.
+     */
     fun itemAleatorio(): Item {
         return items.random()
     }
 
+    /**
+     * Obtiene un ítem aleatorio según el rango del enemigo.
+     * @param enemigo Enemigo del cual se quiere obtener un ítem.
+     * @return Item aleatorio del rango correspondiente al enemigo.
+     */
     fun itemAleatorioPorRango(enemigo: Enemigo): Item {
         return when (enemigo.rango) {
             Rango.E -> items.filter { it.rango == Rango.E }.random()
@@ -24,7 +36,10 @@ object CargarItem {
     }
 
 
-
+    /**
+     * Devuelve una lista con todos los ítems del juego
+     * @return Lista de ítems.
+     */
     fun todosLosItems():List<Item> {
         items = mutableListOf(
             Item.Pocion("Pocion de curación", Rango.E, 50, Estadisticas(25.0, 0.0, 0.0, 0.0), TipoPociones.VIDA),
