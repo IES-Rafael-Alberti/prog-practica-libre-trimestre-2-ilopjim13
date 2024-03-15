@@ -57,10 +57,9 @@ object MostrarEstadisticas {
         do {
             mostrarEstadisticas(jugador)
 
-            println()
-            Mensaje.mostrarConColores(Text("Tienes un total de ${TextColors.yellow(jugador.nivelExperiencia.toString())} puntos para subir."))
-            println("1. Gastar punto de experiencia")
-            println("2. Salir")
+            Mensaje.mostrarConColores(Text("\nTienes un total de ${TextColors.yellow(jugador.nivelExperiencia.toString())} puntos para subir."))
+            Mensaje.mostrar("1. Gastar punto de experiencia")
+            Mensaje.mostrar("2. Salir")
 
             val opcion = Vista.pedirOpcion(2)
             elegirOpcionStats(opcion, jugador)
@@ -78,7 +77,7 @@ object MostrarEstadisticas {
         when (opcion) {
             1 -> {
                 if (jugador.nivelExperiencia > 0) elegirStatASubir(jugador)
-                else println("No tienes suficientes puntos para gastar\n")
+                else Mensaje.mostrar("No tienes suficientes puntos para gastar\n")
                 enterContinuar()
             }
         }
@@ -90,11 +89,11 @@ object MostrarEstadisticas {
      * @param jugador Jugador cuyas estadísticas se modificarán.
      */
     private fun elegirStatASubir(jugador: Jugador) {
-        println("¿Donde quieres gastarlo?")
-        println("1. Vida")
-        println("2. Fuerza")
-        println("3. Agilidad")
-        println("4. Resistencia")
+        Mensaje.mostrar("¿Donde quieres gastarlo?")
+        Mensaje.mostrar("1. Vida")
+        Mensaje.mostrar("2. Fuerza")
+        Mensaje.mostrar("3. Agilidad")
+        Mensaje.mostrar("4. Resistencia")
 
         val opcion = Vista.pedirOpcion(4)
 

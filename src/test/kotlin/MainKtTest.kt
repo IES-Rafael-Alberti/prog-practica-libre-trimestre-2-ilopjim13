@@ -21,8 +21,4 @@ class MainKtTest {
         else assert(false)
     }
 
-    @Test
-    fun personajeIncial() {
-        assert(true)
-    }
 }

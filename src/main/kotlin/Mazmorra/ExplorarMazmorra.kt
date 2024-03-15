@@ -116,10 +116,10 @@ object ExplorarMazmorra {
      * @param enemigos el mapa de enemigos presentes en la sala y su estado.
      */
     private fun salaConEnemigos(jugador: Jugador, enemigos: MutableMap<Enemigo, Boolean>) {
-        println("¿Que quieres hacer?")
-        println("1. Atacar a los enemigos.")
-        println("2. Tomar una pocion")
-        println("3. Huir a la siguiente sala")
+        Mensaje.mostrar("¿Que quieres hacer?")
+        Mensaje.mostrar("1. Atacar a los enemigos.")
+        Mensaje.mostrar("2. Tomar una pocion")
+        Mensaje.mostrar("3. Huir a la siguiente sala")
 
         val opcion = Vista.pedirOpcion(3)
 
@@ -132,9 +132,9 @@ object ExplorarMazmorra {
      * @param jugador el jugador que está explorando la mazmorra.
      */
     private fun salaVacia(jugador: Jugador) {
-        println("¿Que quieres hacer?")
-        println("1. Buscar objeto oculto")
-        println("2. Avanzar a la siguiente sala")
+        Mensaje.mostrar("¿Que quieres hacer?")
+        Mensaje.mostrar("1. Buscar objeto oculto")
+        Mensaje.mostrar("2. Avanzar a la siguiente sala")
 
         val opcion = Vista.pedirOpcion(2)
 
@@ -179,7 +179,7 @@ object ExplorarMazmorra {
         tomaPocion = true
         println()
         if (comprobarPociones(jugador)) {
-            print(">> Introduce el Id del consumible que quieres usar: ")
+            Mensaje.mostrarEnLinea(">> Introduce el Id del consumible que quieres usar: ")
             var id = -1
             do{
                 try {

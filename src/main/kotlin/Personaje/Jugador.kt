@@ -44,7 +44,7 @@ class Jugador(
     val inventario: Inventario = Inventario()
     var nivelExperiencia = 0
     val equipado = mutableMapOf("arma" to false, "armadura" to false)
-    val equipo = mutableListOf<Item>()
+    val equipo = mutableListOf<Equipable<*>>()
     private val pociones = mutableListOf<Item.Pocion>()
 
     companion object {

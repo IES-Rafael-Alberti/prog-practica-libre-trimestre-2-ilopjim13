@@ -56,18 +56,47 @@ open class Tienda: VentaTienda {
             }
         }
 
-    }
+        /**
+         * Actualiza las cantidades de un ítem en el inventario de la tienda y en el inventario diario.
+         *
+         * @param item El ítem cuyas cantidades se van a actualizar.
+         */
+        private fun actualizarCantidades(item: Item) {
+            inventarioEnTienda[item] = inventarioEnTienda[item]!! - 1
+            inventarioDiario[item] = inventarioDiario[item]!! - 1
+        }
 
-    /**
-     * Actualiza las cantidades de un ítem en el inventario de la tienda y en el inventario diario.
-     *
-     * @param item El ítem cuyas cantidades se van a actualizar.
-     */
-    private fun actualizarCantidades(item: Item) {
-        inventarioEnTienda[item] = inventarioEnTienda[item]!! - 1
-        inventarioDiario[item] = inventarioDiario[item]!! - 1
-    }
 
+        /**
+         * Comprueba si el ID proporcionado corresponde a una piedra en el inventario del jugador.
+         *
+         * @param id El ID a comprobar.
+         * @param jugador El jugador cuyo inventario se va a consultar.
+         * @return `true` si el ID corresponde a una piedra, `false` en caso contrario.
+         */
+        fun comprobarIdPiedra(id:Int, jugador: Jugador):Boolean {
+            var idCorrecto = false
+            jugador.inventario.inventario.forEach {
+                if (it.key.id == id) idCorrecto =  true
+            }
+            return idCorrecto
+        }
+
+        /**
+         * Comprueba si el ID proporcionado corresponde a un ítem en el inventario diario de la tienda.
+         *
+         * @param id El ID a comprobar.
+         * @return `true` si el ID corresponde a un ítem en el inventario diario, `false` en caso contrario.
+         */
+        fun comprobarId(id:Int) :Boolean {
+            var idCorrecto = false
+            inventarioDiario.forEach {
+                if (it.key.id == id) idCorrecto =  true
+            }
+            return idCorrecto
+        }
+
+    }
     /**
      * Realiza una venta de un ítem al jugador, actualizando las cantidades en los inventarios.
      *
@@ -85,34 +114,7 @@ open class Tienda: VentaTienda {
         else Mensaje.mostrar("No quedan mas cantidades de este Objeto.")
     }
 
-    /**
-     * Comprueba si el ID proporcionado corresponde a una piedra en el inventario del jugador.
-     *
-     * @param id El ID a comprobar.
-     * @param jugador El jugador cuyo inventario se va a consultar.
-     * @return `true` si el ID corresponde a una piedra, `false` en caso contrario.
-     */
-    fun comprobarIdPiedra(id:Int, jugador: Jugador):Boolean {
-        var idCorrecto = false
-        jugador.inventario.inventario.forEach {
-            if (it.key.id == id) idCorrecto =  true
-        }
-        return idCorrecto
-    }
 
-    /**
-     * Comprueba si el ID proporcionado corresponde a un ítem en el inventario diario de la tienda.
-     *
-     * @param id El ID a comprobar.
-     * @return `true` si el ID corresponde a un ítem en el inventario diario, `false` en caso contrario.
-     */
-    fun comprobarId(id:Int) :Boolean {
-        var idCorrecto = false
-        inventarioDiario.forEach {
-            if (it.key.id == id) idCorrecto =  true
-        }
-        return idCorrecto
-    }
 
 
 

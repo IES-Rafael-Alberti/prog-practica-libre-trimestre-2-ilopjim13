@@ -6,6 +6,7 @@ import Juego.Fin
 import Interfaces.Combates
 import Juego.Mensaje
 import Personaje.Jugador
+import T
 import colorAzul
 import colorRojo
 import colorVerde
@@ -147,8 +148,7 @@ object SimularCombate {
      * @param combatientes Lista de combatientes involucrados en el combate.
      */
     private fun mostrarRondas(combatientes: List<Combates<*>>){
-        val t = Terminal()
-        t.println(
+        T.println(
             Panel(
                 content = textoBatalla(combatientes) ,
                 title = Text("** RONDA ${rondas++} **")

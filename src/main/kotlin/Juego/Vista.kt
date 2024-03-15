@@ -44,14 +44,13 @@ object Vista {
                         "                            _|  "))) }
         })
         Mensaje.imprimirLento("En un mundo donde empezaron a aparecer mazmorras llenas de monstruos, algunas personas despertaron habilidades, ")
-        println("")
+        Mensaje.mostrar("")
         Mensaje.imprimirLento("estas personas son conocidas como cazadores, estos cazadores deben luchar contra monstruos para proteger a la raza humana")
-        println("")
+        Mensaje.mostrar("")
         Mensaje.imprimirLento("de una aniquilación segura, y tú eres uno de ellos. Te adentrarás a las mazmorras mientras subes de nivel para acabar con los monstruos.")
-        println("")
+        Mensaje.mostrar("")
         Mensaje.imprimirLento("Buena suerte cazador, yo el sistema te guiaré durante tu aventura, comencemos.")
-        println("")
-        println("")
+        Mensaje.mostrar("\n")
     }
 
     /**
@@ -62,7 +61,7 @@ object Vista {
     fun pedirNombre(): String {
         var nombre: String
         do {
-            print(">> Bienvenido cazador, introduce tu nombre: ")
+            Mensaje.mostrarEnLinea(">> Bienvenido cazador, introduce tu nombre: ")
             nombre = readln().espacios()
             if (nombre.isBlank()) Mensaje.mostrarConColores("El nombre no puede estar vacío. Introduzcalo de nuevo".colorRojo())
         } while (nombre.isBlank())
@@ -106,7 +105,7 @@ object Vista {
     private fun elegirOpcionMenu(opcion: Int, jugador: Jugador) {
         when (opcion) {
             1 -> {
-                if (mazmorra.comprobarMazmorraCompletada()) T.println("** NO PUEDES VOLVER A HACER LA MAZMORRA VUELVE MAÑANA **".colorRojo())
+                if (mazmorra.comprobarMazmorraCompletada()) Mensaje.mostrarConColores("** NO PUEDES VOLVER A HACER LA MAZMORRA VUELVE MAÑANA **".colorRojo())
                 else {
                     ExplorarMazmorra.entrarEnMazmorra(jugador, mazmorra)
                     mazmorra.salasTerminadas()
@@ -122,9 +121,9 @@ object Vista {
                     Juego.reiniciarDia()
                     jugador.quitarEfectoConsumible()
                     mazmorra = GestionMazmorra.generarMazmorraRandom()
-                    println("-- Se han restablecido los efectos de las pociones")
+                    Mensaje.mostrar("-- Se han restablecido los efectos de las pociones")
                     barraProgreso("Pasando de dia...")
-                } else T.println("** NO PUEDES AVANZAR DE DIA HASTA HABER COMPLETADO LA MAZMORRA Y LAS MISIONES DIARIAS **".colorRojo())
+                } else Mensaje.mostrarConColores("** NO PUEDES AVANZAR DE DIA HASTA HABER COMPLETADO LA MAZMORRA Y LAS MISIONES DIARIAS **".colorRojo())
                 enterContinuar()
             }
             7 -> Fin.salirDelJuego()
@@ -138,18 +137,18 @@ object Vista {
      * @return La opción seleccionada por el usuario.
      */
     fun pedirOpcion(opciones:Int) :Int {
-        print("\n>> Selecciona una opcion: ")
+        Mensaje.mostrarEnLinea("\n>> Selecciona una opcion: ")
         var opcion = -1
         do {
             try {
                 opcion = readln().toInt()
                 if (opcion !in (1..opciones)) {
-                    T.println("**ERROR** Debe de ser una opcion valida.".colorRojo())
+                    Mensaje.mostrarConColores("**ERROR** Debe de ser una opcion valida.".colorRojo())
                     print(">> Selecciona una opcion: ")
                 }
             } catch (e: NumberFormatException) {
-                T.println("**ERROR** Debe de ser una opcion valida.".colorRojo())
-                print(">> Selecciona una opcion: ")
+                Mensaje.mostrarConColores("**ERROR** Debe de ser una opcion valida.".colorRojo())
+                Mensaje.mostrarEnLinea(">> Selecciona una opcion: ")
             }
         } while(opcion !in (1..opciones))
         println()

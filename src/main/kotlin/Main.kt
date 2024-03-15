@@ -2,7 +2,6 @@ import Juego.Juego
 import Personaje.Jugador
 import com.github.ajalt.mordant.animation.ProgressAnimation
 import com.github.ajalt.mordant.animation.progressAnimation
-import com.github.ajalt.mordant.rendering.TextColors
 import com.github.ajalt.mordant.widgets.Text
 import com.github.ajalt.mordant.rendering.TextColors.*
 import com.github.ajalt.mordant.terminal.Terminal

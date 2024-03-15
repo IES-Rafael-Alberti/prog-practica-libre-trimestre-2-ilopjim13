@@ -2,6 +2,7 @@ package Mazmorra
 
 import Enemigo.Enemigo
 import EstadisticaYRango.Rango
+import Juego.Mensaje
 import com.github.ajalt.mordant.widgets.Text
 
 /**
@@ -57,7 +58,7 @@ object GestionMazmorra {
     fun mostrarInfoMazmorra(mazmorra: Mazmorra) {
         var numSalas = 0
         mazmorra.salas.forEach { numSalas = it.key }
-        println("Nombre: ${mazmorra.nombre} de rango ${mazmorra.rango} y con un total de $numSalas salas")
+        Mensaje.mostrar("Nombre: ${mazmorra.nombre} de rango ${mazmorra.rango} y con un total de $numSalas salas")
     }
 
     /**

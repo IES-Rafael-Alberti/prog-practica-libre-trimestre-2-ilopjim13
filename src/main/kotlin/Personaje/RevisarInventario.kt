@@ -2,6 +2,7 @@ package Personaje
 
 import Interfaces.Equipable
 import Item.Item
+import Juego.Mensaje
 import T
 import Juego.Vista
 import colorAzul
@@ -20,8 +21,7 @@ object RevisarInventario {
      * @param jugador El jugador cuyo inventario se va a revisar.
      */
     fun revisarInventario(jugador: Jugador) {
-        val t = Terminal()
-        t.println(
+        T.println(
             Panel(
                 borderStyle = TextColors.magenta,
                 content = textoInventario(jugador),
@@ -38,11 +38,11 @@ object RevisarInventario {
     fun menuInventario(jugador: Jugador) {
         do {
             revisarInventario(jugador)
-            println("¿Que quiere hacer?")
-            println("1- Equipar objeto")
-            println("2- Desequipar objeto")
-            println("3- Ver equipo equipado")
-            println("4- Volver")
+            Mensaje.mostrar("¿Que quiere hacer?")
+            Mensaje.mostrar("1- Equipar objeto")
+            Mensaje.mostrar("2- Desequipar objeto")
+            Mensaje.mostrar("3- Ver equipo equipado")
+            Mensaje.mostrar("4- Volver")
 
             val opcion = Vista.pedirOpcion(4)
             elegirOpcionInventario(opcion, jugador)
@@ -66,7 +66,7 @@ object RevisarInventario {
                     val item = items.keys.firstOrNull()
                     if (item != null && item is Item.Arma) item.equipar(jugador)
                     else if (item != null && item is Item.Armadura) item.equipar(jugador)
-                } else println("No tienes objetos equipables.")
+                } else Mensaje.mostrar("No tienes objetos equipables.")
                 enterContinuar()
             }
             2 -> {
@@ -76,7 +76,7 @@ object RevisarInventario {
                     val item = items.keys.firstOrNull()
                     if (item != null && item is Item.Arma) item.desequipar(jugador)
                     else if (item != null && item is Item.Armadura) item.desequipar(jugador)
-                } else println("No tienes objetos equipados.")
+                } else Mensaje.mostrar("No tienes objetos equipados.")
                 enterContinuar()
             }
             3 -> mostrarEquipo(jugador)
@@ -93,12 +93,11 @@ object RevisarInventario {
         if (equipo.isNotEmpty()) {
             equipo.forEach {
                 when (it) {
-                    is Item.Arma -> println("- Arma: $it")
-                    is Item.Armadura -> println("- Armadura: $it")
-                    else -> println()
+                    is Item.Arma -> Mensaje.mostrar("- Arma: $it")
+                    is Item.Armadura -> Mensaje.mostrar("- Armadura: $it")
                 }
             }
-        } else T.println(">> No tienes nada equipado.".colorAzul())
+        } else Mensaje.mostrarConColores(">> No tienes nada equipado.".colorAzul())
         enterContinuar()
     }
 
@@ -111,13 +110,13 @@ object RevisarInventario {
     private fun pedirId(jugador: Jugador) :Int {
         var id = -1
         do {
-            print(">> Introduce el Id del equipo a equipar: ")
+            Mensaje.mostrarEnLinea(">> Introduce el Id del equipo a equipar: ")
             try {
                 id = readln().toInt()
             } catch (e: NumberFormatException) {
-                println("**ERROR** El Id debe ser un numero")
+                Mensaje.mostrar("**ERROR** El Id debe ser un numero")
             }
-            if(comprobarId(id, jugador)) println("Este id no corresponde a ningun equipo.")
+            if(comprobarId(id, jugador)) Mensaje.mostrar("Este id no corresponde a ningun equipo.")
         } while(comprobarId(id, jugador))
         return id
     }

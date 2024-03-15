@@ -39,6 +39,7 @@ object Juego {
         val nombre = Vista.pedirNombre()
 
         val jugador: Jugador = personajeIncial(nombre)
+
         juego = true
         do {
             Vista.menu(jugador)

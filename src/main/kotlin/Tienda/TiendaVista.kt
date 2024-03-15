@@ -1,9 +1,11 @@
 package Tienda
 
 import Item.Item
+import Juego.Mensaje
 import Personaje.Jugador
 import Personaje.RevisarInventario
 import Juego.Vista
+import T
 import com.github.ajalt.mordant.rendering.*
 import com.github.ajalt.mordant.table.Borders
 import com.github.ajalt.mordant.table.table
@@ -19,8 +21,7 @@ object TiendaVista : Tienda() {
      * diferentes dependiendo del rango del objeto que se vende
      */
     private fun mostrarTienda() {
-        val t = Terminal()
-        t.println(table {
+        T.println(table {
             borderType = BorderType.SQUARE_DOUBLE_SECTION_SEPARATOR
             borderStyle = TextColors.rgb("#4b25b9")
             align = TextAlign.RIGHT
@@ -92,10 +93,9 @@ object TiendaVista : Tienda() {
         do {
             limpiarPantalla()
             mostrarTienda()
-            println()
-            println("1- Comprar Objeto")
-            println("2- Vender Objeto")
-            println("3- Volver")
+            Mensaje.mostrar("\n1- Comprar Objeto")
+            Mensaje.mostrar("2- Vender Objeto")
+            Mensaje.mostrar("3- Volver")
 
             val opcion = Vista.pedirOpcion(3)
             elegirOpcionTienda(opcion, jugador)
@@ -126,20 +126,20 @@ object TiendaVista : Tienda() {
         RevisarInventario.revisarInventario(jugador)
         var idObjeto = -1
         do {
-            print(">> Introduce el Id de la piedra a vender: ")
+            Mensaje.mostrarEnLinea(">> Introduce el Id de la piedra a vender: ")
             try {
                 idObjeto = readln().toInt()
             } catch (e: NumberFormatException) {
-                println("**ERROR** El Id debe ser un numero")
+                Mensaje.mostrar("**ERROR** El Id debe ser un numero")
             }
-            if(!comprobarIdPiedra(idObjeto, jugador)) println("Este id no corresponde a ninguna piedra del jugador.")
+            if(!comprobarIdPiedra(idObjeto, jugador)) Mensaje.mostrar("Este id no corresponde a ninguna piedra del jugador.")
         } while(!comprobarIdPiedra(idObjeto, jugador))
 
         val items = jugador.inventario.inventario.filter { it.key.id == idObjeto }
         lateinit var item: Item
         items.map {item = it.key}
         if (item is Item.Material) jugador.venderPiedras(item)
-        else println("Este objeto no es una piedra...")
+        else Mensaje.mostrar("Este objeto no es una piedra...")
 
         enterContinuar()
 
@@ -153,13 +153,13 @@ object TiendaVista : Tienda() {
     private fun menuVenta(jugador: Jugador) {
         var idObjeto = -1
         do {
-           print(">> Introduce el Id del objeto: ")
+           Mensaje.mostrarEnLinea(">> Introduce el Id del objeto: ")
            try {
                idObjeto = readln().toInt()
            } catch (e: NumberFormatException) {
-                println("**ERROR** El Id debe ser un numero")
+               Mensaje.mostrar("**ERROR** El Id debe ser un numero")
            }
-           if(!comprobarId(idObjeto)) println("Este id no corresponde a ninguno de la tienda.")
+           if(!comprobarId(idObjeto)) Mensaje.mostrar("Este id no corresponde a ninguno de la tienda.")
         } while(!comprobarId(idObjeto))
 
         val items = inventarioDiario.filter { it.key.id == idObjeto }

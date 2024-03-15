@@ -19,6 +19,15 @@ object Mensaje {
     }
 
     /**
+     * Muestra un mensaje en la consola dejando en la misma linea la siguiente interacción.
+     *
+     * @param desc El mensaje a mostrar.
+     */
+    fun mostrarEnLinea(desc:String) {
+        print(desc)
+    }
+
+    /**
      * Muestra un mensaje con colores en la consola.
      *
      * @param text El texto con formato de colores.
